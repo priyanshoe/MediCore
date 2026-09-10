@@ -74,9 +74,8 @@ export default function Sidebar({ isOpen, onClose }) {
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-16 bottom-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-16 bottom-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div className="px-5 py-4 border-b border-slate-100">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
@@ -96,10 +95,9 @@ export default function Sidebar({ isOpen, onClose }) {
                 to={item.path}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-teal-50 text-teal-700 font-semibold shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive
+                    ? 'bg-teal-50 text-teal-700 font-semibold shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`
                 }
               >
@@ -115,7 +113,7 @@ export default function Sidebar({ isOpen, onClose }) {
           <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-2xs mb-2">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs shrink-0">
-                {user.name.charAt(0).toUpperCase()}
+                {user.email.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-semibold text-slate-800 truncate">{user.name}</p>

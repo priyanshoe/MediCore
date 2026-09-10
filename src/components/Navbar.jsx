@@ -2,12 +2,12 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { resetMockData } from '../api/api';
-import { 
-  HeartPulse, 
-  LogOut, 
-  Menu, 
-  X, 
-  User, 
+import {
+  HeartPulse,
+  LogOut,
+  Menu,
+  X,
+  User,
   RotateCcw,
   ShieldCheck,
   Stethoscope
@@ -111,12 +111,12 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
                   {user.profileImage ? (
                     <img
                       src={user.profileImage}
-                      alt={user.name}
+                      alt={user?.name}
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    user.name.charAt(0).toUpperCase()
+                    user.email.charAt(0).toUpperCase()
                   )}
                 </div>
 

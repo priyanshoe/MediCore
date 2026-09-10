@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "dev:server": "npx json-server ./db.json --port 8080",
     "build": "vite build",
     "preview": "vite preview"
   },

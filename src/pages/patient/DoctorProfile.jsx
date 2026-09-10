@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   AlertCircle
 } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
 
 export default function PatientDoctorProfile() {
   const { doctorId, id } = useParams();
@@ -39,28 +40,11 @@ export default function PatientDoctorProfile() {
       try {
         setLoading(true);
         setError('');
-
-        // Attempt 1: Fetch single user by ID
-        try {
-          const res = await api.get(`/users/${currentDoctorId}`);
-          if (res.data && res.data.role === 'DOCTOR') {
-            setDoctor(res.data);
-            setLoading(false);
-            return;
-          }
-        } catch (err) {
-          // If direct endpoint fails, fallback to collection search
-        }
-
-        // Attempt 2: Fetch all doctors and find by ID (robust against string/number ID types)
-        const listRes = await api.get('/users?role=DOCTOR');
-        const doctors = listRes.data || [];
-        const found = doctors.find((d) => String(d.id) === String(currentDoctorId));
-
-        if (found) {
-          setDoctor(found);
-        } else {
-          setError('Doctor profile not found.');
+        const res = await DoctorService.findById(currentDoctorId);
+        if (res.success && res.data) {
+          setDoctor(res.data);
+          setLoading(false);
+          return;
         }
       } catch (err) {
         console.error('Failed to load doctor profile:', err);

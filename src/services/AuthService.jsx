@@ -29,7 +29,6 @@ const register = async (data) => {
             throw { status: 402, message: "user already exist" };
         }
         const userData = {
-            name: data?.name,
             email: data?.email,
             password: data?.password,
             role: data?.role,
@@ -39,19 +38,21 @@ const register = async (data) => {
         delete result.data.password;
 
         const profileData = data?.role === 'PATIENT' ? {
-            "patientId": result?.data?.id,
-            "phone": data?.phone,
-            "dateOfBirth": data?.dateOfBirth,
-            "gender": data?.gender,
-            "address": data?.address
+            patientId: result?.data?.id,
+            name: data?.name,
+            phone: data?.phone,
+            dateOfBirth: data?.dateOfBirth,
+            gender: data?.gender,
+            address: data?.address
         } : data?.role === 'DOCTOR' ? {
-            "doctorId": result?.data?.id,
-            "specialization": data?.specialization,
-            "qualification": data?.qualification,
-            "experience": data?.experience,
-            "consultationFee": data?.consultationFee,
-            "profileImage": data?.profileImage || "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
-            "availability": data?.availability
+            doctorId: result?.data?.id,
+            name: data?.name,
+            specialization: data?.specialization,
+            qualification: data?.qualification,
+            experience: data?.experience,
+            consultationFee: data?.consultationFee,
+            profileImage: data?.profileImage || "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
+            availability: data?.availability
         } : {}
         await axios.post(url + `/${data.role.toLowerCase()}-profile`, profileData)
         return { success: true, status: 200, data: result.data };

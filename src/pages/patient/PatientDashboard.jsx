@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import AppointmentCard from '../../components/AppointmentCard';
@@ -14,6 +13,9 @@ import {
   Stethoscope,
   ArrowRight
 } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
+import AppointmentService from '../../services/AppointmentService';
+import PrescriptionService from '../../services/PrescriptionService';
 
 export default function PatientDashboard() {
   const { user } = useAuth();
@@ -34,9 +36,9 @@ export default function PatientDashboard() {
     try {
       setLoading(true);
       const [apptsRes, doctorsRes, prescRes] = await Promise.all([
-        api.get(`/appointments?patientId=${user.id}`),
-        api.get('/users?role=DOCTOR'),
-        api.get(`/prescriptions?patientId=${user.id}`),
+        AppointmentService.findByPatientId(user.id),
+        DoctorService.findAll(),
+        PrescriptionService.findByPatientId(user.id)
       ]);
 
       const myAppts = apptsRes.data || [];
@@ -91,7 +93,7 @@ export default function PatientDashboard() {
     const confirmed = window.confirm('Are you sure you want to cancel this appointment?');
     if (!confirmed) return;
     try {
-      await api.patch(`/appointments/${appointment.id}`, { status: 'CANCELLED' });
+      await AppointmentService.updateStatus(appointment.id, 'CANCELLED');
       loadPatientData();
     } catch (err) {
       alert('Failed to cancel appointment.');

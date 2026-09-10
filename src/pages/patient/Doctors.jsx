@@ -5,6 +5,7 @@ import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import DoctorCard from '../../components/DoctorCard';
 import { Stethoscope, Search, Filter } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
 
 export default function PatientDoctors() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function PatientDoctors() {
     async function loadDoctors() {
       try {
         setLoading(true);
-        const res = await api.get('/users?role=DOCTOR');
+        const res = await DoctorService.findAll();
         setDoctors(res.data || []);
       } catch (err) {
         console.error('Failed to load doctors:', err);
@@ -99,11 +100,10 @@ export default function PatientDoctors() {
               key={spec}
               type="button"
               onClick={() => setSelectedSpecialization(spec)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                selectedSpecialization === spec
-                  ? 'bg-teal-600 text-white shadow-2xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${selectedSpecialization === spec
+                ? 'bg-teal-600 text-white shadow-2xs'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
             >
               {spec}
             </button>

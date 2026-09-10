@@ -10,7 +10,6 @@
     },
     {
       "id": "2",
-      "name": "Dr. Rahul Sharma",
       "email": "doctor@example.com",
       "password": "password123",
       "role": "DOCTOR",
@@ -18,7 +17,6 @@
     },
     {
       "id": "3",
-      "name": "Dr. Sarah Jenkins",
       "email": "sarah.jenkins@example.com",
       "password": "password123",
       "role": "DOCTOR",
@@ -26,7 +24,6 @@
     },
     {
       "id": "4",
-      "name": "Dr. Amit Patel",
       "email": "amit.patel@example.com",
       "password": "password123",
       "role": "DOCTOR",
@@ -34,7 +31,6 @@
     },
     {
       "id": "5",
-      "name": "John Doe",
       "email": "patient@example.com",
       "password": "password123",
       "role": "PATIENT",
@@ -42,7 +38,6 @@
     },
     {
       "id": "6",
-      "name": "Emily Watson",
       "email": "emily@example.com",
       "password": "password123",
       "role": "PATIENT",
@@ -50,7 +45,6 @@
     },
     {
       "name": "demo",
-      "email": "demo@demo.com",
       "password": "123456",
       "role": "PATIENT",
       "statue": "ACTIVE",
@@ -61,6 +55,7 @@
     {
       "id": "2",
       "doctorId": 2,
+      "name": "Dr. Rahul Sharma",
       "phone": "9876543210",
       "specialization": "Cardiology",
       "qualification": "MBBS, MD (Cardiology)",
@@ -72,6 +67,7 @@
     {
       "id": "3",
       "doctorId": 3,
+      "name": "Dr. Amit Patel",
       "phone": "9876543211",
       "specialization": "Pediatrics",
       "qualification": "MBBS, DCH, MD",
@@ -82,7 +78,8 @@
     },
     {
       "id": "4",
-      "doctorId": 3,
+      "doctorId": 4,
+      "name": "Dr. Sarah Jenkins",
       "specialization": "Neurology",
       "qualification": "MBBS, DM (Neurology)",
       "experience": 12,
@@ -95,6 +92,7 @@
     {
       "id": "1",
       "patientId": 5,
+      "name": "John Doe",
       "phone": "9876543213",
       "dateOfBirth": "1998-05-14",
       "gender": "Male",
@@ -103,6 +101,7 @@
     {
       "id": "2",
       "patientId": 6,
+      "name": "Emily Watson",
       "phone": "9876543214",
       "dateOfBirth": "2001-11-22",
       "gender": "Female",
@@ -110,6 +109,7 @@
     },
     {
       "patientId": "jMFGZu2pd84",
+      "email": "demo@demo.com",
       "phone": "3456676543",
       "dateOfBirth": "2026-09-08",
       "gender": "Male",
@@ -135,7 +135,7 @@
       "date": "2026-09-15",
       "time": "11:30",
       "reason": "Seasonal allergy consultation and wellness assessment",
-      "status": "ACCEPTED",
+      "status": "CANCELLED",
       "createdAt": "2026-09-02"
     },
     {
@@ -157,6 +157,36 @@
       "reason": "Migraine headache frequency review",
       "status": "PENDING",
       "createdAt": "2026-09-04"
+    },
+    {
+      "patientId": 5,
+      "doctorId": 3,
+      "date": "2026-09-17",
+      "time": "10:00 AM",
+      "reason": "sacs sawsd",
+      "status": "CANCELLED",
+      "createdAt": "2026-09-10",
+      "id": "WVVXokkg4SE"
+    },
+    {
+      "patientId": 5,
+      "doctorId": 4,
+      "date": "2026-09-17",
+      "time": "11:15 AM",
+      "reason": "adasd wdwad w",
+      "status": "PENDING",
+      "createdAt": "9/11/2026",
+      "id": "HWlmXEED0Cc"
+    },
+    {
+      "patientId": 5,
+      "doctorId": 2,
+      "date": "2026-09-18",
+      "time": "10:00 AM",
+      "reason": "jyhf hj",
+      "status": "PENDING",
+      "createdAt": "9/11/2026, 1:12:41 AM",
+      "id": "phivEWk2mQ8"
     }
   ],
   "prescriptions": [

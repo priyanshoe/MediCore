@@ -6,6 +6,9 @@ import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import AppointmentCard from '../../components/AppointmentCard';
 import { Calendar, PlusCircle, Filter } from 'lucide-react';
+import AppointmentService from '../../services/AppointmentService';
+import DoctorService from '../../services/DoctorService';
+import PrescriptionService from '../../services/PrescriptionService';
 
 export default function PatientAppointments() {
   const { user } = useAuth();
@@ -23,9 +26,9 @@ export default function PatientAppointments() {
     try {
       setLoading(true);
       const [apptsRes, doctorsRes, prescRes] = await Promise.all([
-        api.get(`/appointments?patientId=${user.id}`),
-        api.get('/users?role=DOCTOR'),
-        api.get(`/prescriptions?patientId=${user.id}`),
+        AppointmentService.findByPatientId(user.id),
+        DoctorService.findAll(),
+        PrescriptionService.findAll()
       ]);
 
       const appts = apptsRes.data || [];
@@ -61,14 +64,13 @@ export default function PatientAppointments() {
 
   const handleCancel = async (appointment) => {
     const confirmed = window.confirm(
-      `Are you sure you want to cancel your appointment with ${
-        doctorsMap[appointment.doctorId]?.name || 'the doctor'
+      `Are you sure you want to cancel your appointment with ${doctorsMap[appointment.doctorId]?.name || 'the doctor'
       }?`
     );
     if (!confirmed) return;
 
     try {
-      await api.patch(`/appointments/${appointment.id}`, { status: 'CANCELLED' });
+      await AppointmentService.updateStatus(appointment.id, 'CANCELLED')
       fetchPatientAppointments();
     } catch (err) {
       alert('Failed to cancel appointment.');
@@ -115,11 +117,10 @@ export default function PatientAppointments() {
             key={tab}
             type="button"
             onClick={() => setStatusFilter(tab)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-              statusFilter === tab
-                ? 'bg-teal-600 text-white shadow-2xs'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${statusFilter === tab
+              ? 'bg-teal-600 text-white shadow-2xs'
+              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
           >
             {tab}
           </button>

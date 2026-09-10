@@ -4,6 +4,8 @@ import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { FileText, Stethoscope, Calendar, Pill, Clock, AlertCircle } from 'lucide-react';
+import PrescriptionService from '../../services/PrescriptionService';
+import DoctorService from '../../services/DoctorService';
 
 export default function PatientPrescriptions() {
   const { user } = useAuth();
@@ -18,8 +20,8 @@ export default function PatientPrescriptions() {
       try {
         setLoading(true);
         const [prescRes, doctorsRes] = await Promise.all([
-          api.get(`/prescriptions?patientId=${user.id}`),
-          api.get('/users?role=DOCTOR'),
+          PrescriptionService.findByPatientId(user.id),
+          DoctorService.findAll()
         ]);
 
         const prescList = prescRes.data || [];

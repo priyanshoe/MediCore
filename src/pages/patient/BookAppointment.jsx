@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, useParams, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import {
   Calendar,
@@ -12,6 +11,8 @@ import {
   AlertCircle,
   CheckCircle2
 } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
+import AppointmentService from '../../services/AppointmentService';
 
 export default function BookAppointment() {
   const { user } = useAuth();
@@ -50,7 +51,7 @@ export default function BookAppointment() {
     async function loadDoctors() {
       try {
         setLoading(true);
-        const res = await api.get('/users?role=DOCTOR');
+        const res = await DoctorService.findAll();
         const docs = res.data || [];
         setDoctors(docs);
 
@@ -104,10 +105,10 @@ export default function BookAppointment() {
         time: formData.time,
         reason: formData.reason.trim(),
         status: 'PENDING',
-        createdAt: new Date().toISOString().split('T')[0],
+        createdAt: new Date().toLocaleString(),
       };
 
-      await api.post('/appointments', appointmentPayload);
+      await AppointmentService.save(appointmentPayload);
       navigate('/patient/appointments');
     } catch (err) {
       console.error('Failed to book appointment:', err);
