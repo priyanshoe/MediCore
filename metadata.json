@@ -1,0 +1,6 @@
+{
+  "name": "Medical Management System",
+  "description": "A simple, clean, and modern medical management web application with role-based access control for Admins, Doctors, and Patients.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

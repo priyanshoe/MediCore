@@ -1,0 +1,187 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "password": "password123",
+      "role": "ADMIN",
+      "status": "Active"
+    },
+    {
+      "id": "2",
+      "name": "Dr. Rahul Sharma",
+      "email": "doctor@example.com",
+      "password": "password123",
+      "role": "DOCTOR",
+      "status": "Active"
+    },
+    {
+      "id": "3",
+      "name": "Dr. Sarah Jenkins",
+      "email": "sarah.jenkins@example.com",
+      "password": "password123",
+      "role": "DOCTOR",
+      "status": "Active"
+    },
+    {
+      "id": "4",
+      "name": "Dr. Amit Patel",
+      "email": "amit.patel@example.com",
+      "password": "password123",
+      "role": "DOCTOR",
+      "status": "Active"
+    },
+    {
+      "id": "5",
+      "name": "John Doe",
+      "email": "patient@example.com",
+      "password": "password123",
+      "role": "PATIENT",
+      "status": "Active"
+    },
+    {
+      "id": "6",
+      "name": "Emily Watson",
+      "email": "emily@example.com",
+      "password": "password123",
+      "role": "PATIENT",
+      "status": "Active"
+    },
+    {
+      "name": "demo",
+      "email": "demo@demo.com",
+      "password": "123456",
+      "role": "PATIENT",
+      "statue": "ACTIVE",
+      "id": "jMFGZu2pd84"
+    }
+  ],
+  "doctor-profile": [
+    {
+      "id": "2",
+      "doctorId": 2,
+      "phone": "9876543210",
+      "specialization": "Cardiology",
+      "qualification": "MBBS, MD (Cardiology)",
+      "experience": 8,
+      "consultationFee": 500,
+      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
+      "availability": "Mon-Fri (09:00 - 17:00)"
+    },
+    {
+      "id": "3",
+      "doctorId": 3,
+      "phone": "9876543211",
+      "specialization": "Pediatrics",
+      "qualification": "MBBS, DCH, MD",
+      "experience": 6,
+      "consultationFee": 400,
+      "profileImage": "https://images.unsplash.com/photo-1594824813583-7853b0e36746?w=400&auto=format&fit=crop&q=80",
+      "availability": "Mon-Sat (10:00 - 16:00)"
+    },
+    {
+      "id": "4",
+      "doctorId": 3,
+      "specialization": "Neurology",
+      "qualification": "MBBS, DM (Neurology)",
+      "experience": 12,
+      "consultationFee": 750,
+      "profileImage": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
+      "availability": "Tue-Sat (11:00 - 18:00)"
+    }
+  ],
+  "patient-profile": [
+    {
+      "id": "1",
+      "patientId": 5,
+      "phone": "9876543213",
+      "dateOfBirth": "1998-05-14",
+      "gender": "Male",
+      "address": "124 Park Avenue, Metro City"
+    },
+    {
+      "id": "2",
+      "patientId": 6,
+      "phone": "9876543214",
+      "dateOfBirth": "2001-11-22",
+      "gender": "Female",
+      "address": "45 Lakeview Drive, Sunnyvale"
+    },
+    {
+      "patientId": "jMFGZu2pd84",
+      "phone": "3456676543",
+      "dateOfBirth": "2026-09-08",
+      "gender": "Male",
+      "address": "ewrf wefefwefewf",
+      "id": "5IKwzwSj5xQ"
+    }
+  ],
+  "appointments": [
+    {
+      "id": "1",
+      "patientId": 5,
+      "doctorId": 2,
+      "date": "2026-09-10",
+      "time": "10:00",
+      "reason": "Regular cardiac checkup and blood pressure monitoring",
+      "status": "COMPLETED",
+      "createdAt": "2026-09-01"
+    },
+    {
+      "id": "2",
+      "patientId": 5,
+      "doctorId": 3,
+      "date": "2026-09-15",
+      "time": "11:30",
+      "reason": "Seasonal allergy consultation and wellness assessment",
+      "status": "ACCEPTED",
+      "createdAt": "2026-09-02"
+    },
+    {
+      "id": "3",
+      "patientId": 6,
+      "doctorId": 2,
+      "date": "2026-09-18",
+      "time": "14:00",
+      "reason": "Occasional palpitations and fatigue consultation",
+      "status": "PENDING",
+      "createdAt": "2026-09-03"
+    },
+    {
+      "id": "4",
+      "patientId": 5,
+      "doctorId": 4,
+      "date": "2026-09-22",
+      "time": "15:30",
+      "reason": "Migraine headache frequency review",
+      "status": "PENDING",
+      "createdAt": "2026-09-04"
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": "1",
+      "doctorId": 2,
+      "patientId": 5,
+      "appointmentId": 1,
+      "diagnosis": "Mild Hypertension & Work-related Fatigue",
+      "medicines": [
+        {
+          "name": "Amlodipine",
+          "dosage": "5mg",
+          "frequency": "Once daily in morning"
+        },
+        {
+          "name": "Vitamin B-Complex",
+          "dosage": "1 tablet",
+          "frequency": "Once daily after lunch"
+        }
+      ],
+      "instructions": "Take medicines after meals. Drink at least 2.5L water daily and limit dietary sodium.",
+      "notes": "Patient advised to log daily morning blood pressure readings.",
+      "followUpDate": "2026-09-30"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
