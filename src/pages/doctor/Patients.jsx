@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { Users, Phone, Mail, Calendar, User, Clock, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AppointmentService from '../../services/AppointmentService';
+import PatientService from '../../services/PatientService';
 
 export default function DoctorPatients() {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ export default function DoctorPatients() {
       try {
         setLoading(true);
         // 1. Fetch appointments for this doctor only
-        const apptsRes = await api.get(`/appointments?doctorId=${user.id}`);
+        const apptsRes = await AppointmentService.findByDoctortId(user.doctorId);
         const doctorAppts = apptsRes.data || [];
 
         // 2. Extract unique patient IDs (normalized to string for safe comparison)
@@ -31,15 +32,15 @@ export default function DoctorPatients() {
         }
 
         // 3. Fetch all patients and filter only those with appointments with this doctor
-        const patientsRes = await api.get('/users?role=PATIENT');
+        const patientsRes = await PatientService.findAll();
         const allPatients = patientsRes.data || [];
 
         const filtered = allPatients
-          .filter((p) => patientIds.includes(String(p.id)))
+          .filter((p) => patientIds.includes(String(p.patientId)))
           .map((patient) => {
             // Find patient's appointments with this doctor
             const myPatientAppts = doctorAppts
-              .filter((a) => String(a.patientId) === String(patient.id))
+              .filter((a) => String(a.patientId) === String(patient.patientId))
               .sort((a, b) => (b.date > a.date ? 1 : -1));
 
             const lastAppointment = myPatientAppts[0];

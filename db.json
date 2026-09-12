@@ -49,13 +49,6 @@
       "role": "PATIENT",
       "statue": "ACTIVE",
       "id": "jMFGZu2pd84"
-    },
-    {
-      "email": "demo@demo.com",
-      "password": "1234444",
-      "role": "PATIENT",
-      "statue": "ACTIVE",
-      "id": "CJF9eYykEnE"
     }
   ],
   "doctor-profile": [
@@ -67,7 +60,7 @@
       "specialization": "Cardiology",
       "qualification": "MBBS, MD (Cardiology)",
       "experience": 8,
-      "consultationFee": 500,
+      "consultationFee": 300,
       "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
       "availability": "Mon-Fri (09:00 - 17:00)"
     },
@@ -103,7 +96,7 @@
       "phone": "9876543213",
       "dateOfBirth": "1998-05-14",
       "gender": "Male",
-      "address": "124 Park Avenue, Metro City update 3"
+      "address": "124 Park Avenue, Metro City update"
     },
     {
       "id": "2",
@@ -116,21 +109,12 @@
     },
     {
       "patientId": "jMFGZu2pd84",
-      "email": "demo@demo.com",
+      "name": "Demo Watson",
       "phone": "3456676543",
       "dateOfBirth": "2026-09-08",
       "gender": "Male",
       "address": "ewrf wefefwefewf",
       "id": "5IKwzwSj5xQ"
-    },
-    {
-      "patientId": "CJF9eYykEnE",
-      "name": "demo",
-      "phone": "4445566665443",
-      "dateOfBirth": "2026-09-07",
-      "gender": "Male",
-      "address": "tvsdg4 5 4 sfger",
-      "id": "Oj3hWl2ywB4"
     }
   ],
   "appointments": [
@@ -147,7 +131,7 @@
     {
       "id": "2",
       "patientId": 5,
-      "doctorId": 3,
+      "doctorId": 2,
       "date": "2026-09-15",
       "time": "11:30",
       "reason": "Seasonal allergy consultation and wellness assessment",
@@ -157,7 +141,7 @@
     {
       "id": "3",
       "patientId": 6,
-      "doctorId": 2,
+      "doctorId": 3,
       "date": "2026-09-18",
       "time": "14:00",
       "reason": "Occasional palpitations and fatigue consultation",
@@ -166,7 +150,7 @@
     },
     {
       "id": "4",
-      "patientId": 5,
+      "patientId": 6,
       "doctorId": 4,
       "date": "2026-09-22",
       "time": "15:30",
@@ -175,7 +159,7 @@
       "createdAt": "2026-09-04"
     },
     {
-      "patientId": 5,
+      "patientId": "jMFGZu2pd84",
       "doctorId": 3,
       "date": "2026-09-17",
       "time": "10:00 AM",
@@ -185,8 +169,8 @@
       "id": "WVVXokkg4SE"
     },
     {
-      "patientId": 5,
-      "doctorId": 4,
+      "patientId": "jMFGZu2pd84",
+      "doctorId": 2,
       "date": "2026-09-17",
       "time": "11:15 AM",
       "reason": "adasd wdwad w",

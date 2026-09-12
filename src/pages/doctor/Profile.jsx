@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { User, Phone, Stethoscope, Award, DollarSign, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
 
 export default function DoctorProfile() {
-  const { user, updateUser } = useAuth();
+  const { user, setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -31,11 +32,14 @@ export default function DoctorProfile() {
     setSuccessMsg('');
     setErrorMsg('');
 
-    const res = await updateUser({
+    const res = await DoctorService.updateById(user?.id, {
       ...formData,
       experience: Number(formData.experience) || 0,
       consultationFee: Number(formData.consultationFee) || 50,
     });
+    const authUser = { ...res.data, role: 'DOCTOR' }
+    localStorage.setItem('medical_user', JSON.stringify(authUser));
+    setUser(authUser);
 
     setIsSubmitting(false);
 

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import AppointmentCard from '../../components/AppointmentCard';
 import { Calendar, Filter, X, CheckCircle2, AlertCircle } from 'lucide-react';
+import PatientService from '../../services/PatientService';
+import PrescriptionService from '../../services/PrescriptionService';
+import AppointmentService from '../../services/AppointmentService';
 
 export default function DoctorAppointments() {
   const { user } = useAuth();
@@ -27,9 +29,10 @@ export default function DoctorAppointments() {
     try {
       setLoading(true);
       const [apptsRes, patientsRes, prescriptionsRes] = await Promise.all([
-        api.get(`/appointments?doctorId=${user.id}`),
-        api.get('/users?role=PATIENT'),
-        api.get(`/prescriptions?doctorId=${user.id}`),
+        AppointmentService.findByDoctortId(user.doctorId),
+        PatientService.findAll(),
+        PrescriptionService.findAll(),
+        // api.get(`/prescriptions?doctorId=${user.id}`),
       ]);
 
       const appts = apptsRes.data || [];
@@ -64,7 +67,7 @@ export default function DoctorAppointments() {
 
   const handleAccept = async (appointment) => {
     try {
-      await api.patch(`/appointments/${appointment.id}`, { status: 'ACCEPTED' });
+      await AppointmentService.updateStatus(appointment.id, 'ACCEPTED');
       fetchDoctorAppointments();
     } catch (err) {
       alert('Failed to accept appointment.');
@@ -80,10 +83,7 @@ export default function DoctorAppointments() {
     e.preventDefault();
     if (!rejectingAppt) return;
     try {
-      await api.patch(`/appointments/${rejectingAppt.id}`, {
-        status: 'REJECTED',
-        rejectionReason: rejectionReason.trim() || 'Schedule conflict / Unavailable',
-      });
+      await AppointmentService.updateStatus(rejectingAppt.id, 'REJECTED');
       setRejectingAppt(null);
       fetchDoctorAppointments();
     } catch (err) {
@@ -122,11 +122,10 @@ export default function DoctorAppointments() {
               key={tab}
               type="button"
               onClick={() => setStatusFilter(tab)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                statusFilter === tab
-                  ? 'bg-teal-600 text-white shadow-2xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${statusFilter === tab
+                ? 'bg-teal-600 text-white shadow-2xs'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
             >
               {tab}
             </button>

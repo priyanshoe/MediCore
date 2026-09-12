@@ -27,9 +27,39 @@ const findByPatientId = async (id) => {
         const result = await axios.get(`${url}/prescriptions?patientId=${id}`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
-        console.log("Error finding prescriptions: ", err)
+        console.log("Error finding patient prescriptions: ", err)
         throw { success: false, status: err.status || 500, error: err.message };
     }
 }
 
-export default { findAll, findById, findByPatientId }
+const findByDoctorId = async (id) => {
+    try {
+        const result = await axios.get(`${url}/prescriptions?doctorId=${id}`)
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error finding doctor prescriptions: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
+const save = async (data) => {
+    try {
+        const result = await axios.post(`${url}/prescriptions`, data)
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error saving prescriptions: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
+const update = async (id, data) => {
+    try {
+        const result = await axios.get(`${url}/prescriptions/${id}`, data)
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error finding doctor prescriptions: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
+export default { findAll, findById, findByPatientId, findByDoctorId, save, update }

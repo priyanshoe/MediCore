@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import {
@@ -16,6 +15,9 @@ import {
   Pill,
   ChevronDown
 } from 'lucide-react';
+import PrescriptionService from '../../services/PrescriptionService';
+import AppointmentService from '../../services/AppointmentService';
+import PatientService from '../../services/PatientService';
 
 export default function DoctorPrescription() {
   const { user } = useAuth();
@@ -47,9 +49,9 @@ export default function DoctorPrescription() {
     try {
       setLoading(true);
       const [prescRes, apptsRes, patientsRes] = await Promise.all([
-        api.get(`/prescriptions?doctorId=${user.id}`),
-        api.get(`/appointments?doctorId=${user.id}`),
-        api.get('/users?role=PATIENT'),
+        PrescriptionService.findByDoctorId(user.doctorId),
+        AppointmentService.findByDoctortId(user.doctorId),
+        PatientService.findAll(),
       ]);
 
       const myPrescriptions = prescRes.data || [];
@@ -159,18 +161,16 @@ export default function DoctorPrescription() {
       );
 
       if (existing) {
-        await api.patch(`/prescriptions/${existing.id}`, payload);
+        await PrescriptionService.update(existing.id, payload);
         setSuccessMsg('Prescription and medical notes updated successfully!');
       } else {
-        await api.post('/prescriptions', payload);
+        await PrescriptionService.save(payload);
         setSuccessMsg('New prescription and medical notes saved successfully!');
       }
 
       // Automatically mark appointment as COMPLETED if it was ACCEPTED
       if (formData.appointmentId) {
-        await api.patch(`/appointments/${formData.appointmentId}`, {
-          status: 'COMPLETED',
-        });
+        await AppointmentService.updateStatus(formData.appointmentId, 'COMPLETED')
       }
 
       // Refresh list

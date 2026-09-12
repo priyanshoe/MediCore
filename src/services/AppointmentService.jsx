@@ -32,6 +32,16 @@ const findByPatientId = async (id) => {
     }
 }
 
+const findByDoctortId = async (id) => {
+    try {
+        const result = await axios.get(`${url}/appointments?doctorId=${id}`)
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error finding appointments: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
 const updateStatus = async (id, status) => {
     try {
         const result = await axios.patch(`${url}/appointments/${id}`, { status: status })
@@ -53,4 +63,4 @@ const save = async (data) => {
 }
 
 
-export default { findAll, findById, findByPatientId, updateStatus, save }
+export default { findAll, findById, findByPatientId, findByDoctortId, updateStatus, save }

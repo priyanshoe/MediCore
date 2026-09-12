@@ -54,8 +54,8 @@ export function AuthProvider({ children }) {
         authUser = { ...result.data[0], role: 'PATIENT' }
       }
       if (user.role === 'DOCTOR') {
-        const result = await DoctorService.findById(user.id)
-        authUser = { ...result.data[0], role: 'PATIENT' }
+        const result = await DoctorService.findByUserId(user.id)
+        authUser = { ...result.data[0], role: 'DOCTOR' }
       }
       localStorage.setItem('medical_user', JSON.stringify(authUser));
       localStorage.setItem('medical_token', `mock_token_${Date.now()}`);

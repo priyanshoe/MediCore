@@ -14,6 +14,8 @@ import {
   ArrowRight,
   FileText
 } from 'lucide-react';
+import AppointmentService from '../../services/AppointmentService';
+import PatientService from '../../services/PatientService';
 
 export default function DoctorDashboard() {
   const { user } = useAuth();
@@ -34,8 +36,8 @@ export default function DoctorDashboard() {
       setLoading(true);
       // Doctor only sees appointments where doctorId matches user.id
       const [apptsRes, usersRes] = await Promise.all([
-        api.get(`/appointments?doctorId=${user.id}`),
-        api.get('/users?role=PATIENT'),
+        AppointmentService.findByDoctortId(user.doctorId),
+        PatientService.findAll(),
       ]);
 
       const myAppts = apptsRes.data || [];
@@ -85,7 +87,7 @@ export default function DoctorDashboard() {
 
   const handleAccept = async (appointment) => {
     try {
-      await api.patch(`/appointments/${appointment.id}`, { status: 'ACCEPTED' });
+      await AppointmentService.updateStatus(appointment.id, 'ACCEPTED');
       loadDoctorData();
     } catch (err) {
       alert('Failed to accept appointment.');
@@ -95,10 +97,7 @@ export default function DoctorDashboard() {
   const handleReject = async (appointment) => {
     const reason = window.prompt('Optional: provide a reason for rejecting this appointment:');
     try {
-      await api.patch(`/appointments/${appointment.id}`, {
-        status: 'REJECTED',
-        rejectionReason: reason || 'Schedule conflict',
-      });
+      await AppointmentService.updateStatus(appointment.id, 'REJECTED');
       loadDoctorData();
     } catch (err) {
       alert('Failed to reject appointment.');

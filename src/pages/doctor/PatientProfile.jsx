@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import { getStatusBadge } from '../../components/AppointmentCard';
 import {
@@ -18,6 +17,8 @@ import {
   AlertCircle,
   ShieldAlert
 } from 'lucide-react';
+import PatientService from '../../services/PatientService';
+import AppointmentService from '../../services/AppointmentService';
 
 export default function DoctorPatientProfile() {
   const { patientId, id } = useParams();
@@ -45,8 +46,8 @@ export default function DoctorPatientProfile() {
       // 1. Fetch patient record
       let foundPatient = null;
       try {
-        const res = await api.get(`/users/${currentPatientId}`);
-        if (res.data && res.data.role === 'PATIENT') {
+        const res = await PatientService.findById(currentPatientId);
+        if (res.data) {
           foundPatient = res.data;
         }
       } catch (err) {
@@ -54,7 +55,7 @@ export default function DoctorPatientProfile() {
       }
 
       if (!foundPatient) {
-        const listRes = await api.get('/users?role=PATIENT');
+        const listRes = await PatientService.findAll();
         const patients = listRes.data || [];
         foundPatient = patients.find((p) => String(p.id) === String(currentPatientId));
       }
@@ -69,7 +70,7 @@ export default function DoctorPatientProfile() {
 
       // 2. Fetch appointments between this doctor and this patient
       if (user) {
-        const apptsRes = await api.get(`/appointments?doctorId=${user.id}`);
+        const apptsRes = await AppointmentService.findByDoctortId(user.doctorId);
         const allAppts = apptsRes.data || [];
         const filtered = allAppts
           .filter((a) => String(a.patientId) === String(currentPatientId))
@@ -90,7 +91,7 @@ export default function DoctorPatientProfile() {
 
   const handleAcceptAppointment = async (appointmentId) => {
     try {
-      await api.patch(`/appointments/${appointmentId}`, { status: 'ACCEPTED' });
+      await AppointmentService.updateStatus(appointmentId, 'ACCEPTED')
       setActionSuccess('Appointment marked as accepted successfully.');
       setTimeout(() => setActionSuccess(''), 4000);
       fetchPatientData();
@@ -104,10 +105,7 @@ export default function DoctorPatientProfile() {
     if (reason === null) return;
 
     try {
-      await api.patch(`/appointments/${appointmentId}`, {
-        status: 'REJECTED',
-        rejectionReason: reason.trim() || 'Unavailable during requested time slot',
-      });
+      await AppointmentService.updateStatus(appointmentId, 'REJECTED')
       setActionSuccess('Appointment rejected.');
       setTimeout(() => setActionSuccess(''), 4000);
       fetchPatientData();
