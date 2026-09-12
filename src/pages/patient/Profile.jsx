@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { User, Phone, Calendar, MapPin, CheckCircle2, AlertCircle } from 'lucide-react';
-import DoctorService from '../../services/DoctorService';
+import PatientService from '../../services/PatientService';
 
 export default function PatientProfile() {
-  const { user, updateUser } = useAuth();
+  const { user, setUser, updateUser } = useAuth();
 
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -29,7 +29,10 @@ export default function PatientProfile() {
     setSuccessMsg('');
     setErrorMsg('');
 
-    const res = await DoctorService.updateById();
+    const res = await PatientService.updateById(user?.id, formData);
+    const authUser = { ...res.data, role: 'PATIENT' }
+    localStorage.setItem('medical_user', JSON.stringify(authUser));
+    setUser(authUser);
     setIsSubmitting(false);
 
     if (res.success) {

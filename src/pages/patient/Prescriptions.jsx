@@ -20,7 +20,7 @@ export default function PatientPrescriptions() {
       try {
         setLoading(true);
         const [prescRes, doctorsRes] = await Promise.all([
-          PrescriptionService.findByPatientId(user.id),
+          PrescriptionService.findByPatientId(user.patientId),
           DoctorService.findAll()
         ]);
 

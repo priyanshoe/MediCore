@@ -26,7 +26,7 @@ export default function PatientAppointments() {
     try {
       setLoading(true);
       const [apptsRes, doctorsRes, prescRes] = await Promise.all([
-        AppointmentService.findByPatientId(user.id),
+        AppointmentService.findByPatientId(user.patientId),
         DoctorService.findAll(),
         PrescriptionService.findAll()
       ]);

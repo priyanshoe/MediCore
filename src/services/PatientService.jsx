@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -32,4 +33,14 @@ const findByUserId = async (id) => {
     }
 }
 
-export default { findAll, findById, findByUserId }
+const updateById = async (id, data) => {
+    try {
+        const result = await axios.patch(`${url}/patient-profile/${id}`, data)
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error updating doctor: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
+export default { findAll, findById, findByUserId, updateById }

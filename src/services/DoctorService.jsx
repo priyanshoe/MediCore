@@ -2,7 +2,6 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
 const url = import.meta.env.VITE_API_URL;
-const { setUser } = useAuth();
 
 const findAll = async () => {
     try {
@@ -24,11 +23,11 @@ const findById = async (id) => {
     }
 }
 
-const updateById = async (id) => {
+const updateById = async (id, data) => {
     try {
-        const result = await axios.patch(`${url}/doctor-profile/${id}`)
-        const updatedUser = response.data;
-
+        const { setUser } = useAuth();
+        const result = await axios.patch(`${url}/doctor-profile/${id}`, data)
+        const updatedUser = result.data;
         localStorage.setItem('medical_user', JSON.stringify(updatedUser));
         setUser(updatedUser);
         return { success: true, status: 200, data: result.data };

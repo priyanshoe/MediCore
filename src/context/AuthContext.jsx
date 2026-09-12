@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
       }
       localStorage.setItem('medical_user', JSON.stringify(authUser));
       localStorage.setItem('medical_token', `mock_token_${Date.now()}`);
-      setUser(user);
+      setUser(authUser);
 
       return { success: true, user: user };
     } catch (err) {
@@ -115,7 +115,6 @@ export function AuthProvider({ children }) {
     try {
       const response = await api.patch(`/users/${user.id}`, updates);
       const updatedUser = response.data;
-
       localStorage.setItem('medical_user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       return { success: true, user: updatedUser };
