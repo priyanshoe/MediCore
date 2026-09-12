@@ -1,6 +1,18 @@
 import axios from "axios";
+import PatientService from "./PatientService";
 
 const url = import.meta.env.VITE_API_URL;
+
+
+async function findAll() {
+    try {
+        const result = await axios.get(url + "/users")
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error in fetching Doctors", err);
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
 
 const findByEmail = async (email) => {
     try {
@@ -12,12 +24,22 @@ const findByEmail = async (email) => {
     }
 }
 
-async function findAll() {
+const findById = async (id) => {
     try {
-        const result = await axios.get(url + "/users")
+        const result = await axios.get(`${url}/users/${id}`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
-        console.log("Error in fetching Doctors", err);
+        console.log("Error finding user by email:", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
+const updateStatus = async (id, status) => {
+    try {
+        const result = await axios.patch(`${url}/users/${id}`, { status: status })
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error updating status: ", err)
         throw { success: false, status: err.status || 500, error: err.message };
     }
 }
@@ -32,7 +54,7 @@ const register = async (data) => {
             email: data?.email,
             password: data?.password,
             role: data?.role,
-            statue: "ACTIVE"
+            status: "ACTIVE"
         }
         const result = await axios.post(url + "/users", userData)
         delete result.data.password;
@@ -72,6 +94,7 @@ async function login(email, password) {
             throw { status: 409, message: "bad credentials" }
         }
         delete user.password;
+        delete user.email;
         return { success: true, status: 200, data: user };
     } catch (err) {
         console.log("Error in login", err)
@@ -80,7 +103,18 @@ async function login(email, password) {
     }
 }
 
+async function deleteSoft(id) {
+    try {
+        const deletedUser = await updateStatus(id, 'DELETED')
+        return { success: true, status: 200, data: { user: deletedUser.data.email, status: deletedUser.data.status } };
+    } catch (err) {
+        console.log("Error in deleting", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+
+    }
+}
 
 
 
-export default { register, login, findAll, findByEmail }
+
+export default { register, login, findAll, findById, findByEmail, deleteSoft }

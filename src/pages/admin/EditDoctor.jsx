@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
+import AuthService from '../../services/AuthService';
 
 export default function EditDoctor() {
   const { id } = useParams();
@@ -30,8 +31,10 @@ export default function EditDoctor() {
     async function loadDoctor() {
       try {
         setLoading(true);
-        const res = await api.get(`/users/${id}`);
-        const doc = res.data;
+        const res = await DoctorService.findById(id);
+        const user = await AuthService.findById(res.data.doctorId)
+        const doc = { ...user.data, ...res.data };
+
         if (!doc || doc.role !== 'DOCTOR') {
           setError('Doctor record not found.');
           return;
@@ -71,11 +74,11 @@ export default function EditDoctor() {
 
     try {
       setIsSubmitting(true);
-      await api.patch(`/users/${id}`, {
+      await DoctorService.updateById(id, {
         ...formData,
         experience: Number(formData.experience) || 0,
         consultationFee: Number(formData.consultationFee) || 50,
-      });
+      })
       navigate('/admin/doctors');
     } catch (err) {
       console.error('Failed to update doctor:', err);

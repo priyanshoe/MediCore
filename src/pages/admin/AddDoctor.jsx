@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import api from '../../api/api';
 import { ArrowLeft, Stethoscope, CheckCircle2, AlertCircle } from 'lucide-react';
+import AuthService from '../../services/AuthService';
 
 export default function AddDoctor() {
   const navigate = useNavigate();
@@ -38,18 +38,6 @@ export default function AddDoctor() {
 
     try {
       setIsSubmitting(true);
-      // Verify email uniqueness
-      const existingRes = await api.get('/users');
-      const allUsers = existingRes.data || [];
-      const duplicate = allUsers.find(
-        (u) => u.email.toLowerCase() === formData.email.trim().toLowerCase()
-      );
-
-      if (duplicate) {
-        setError('A user with this email address already exists.');
-        setIsSubmitting(false);
-        return;
-      }
 
       // Role must automatically be DOCTOR
       const doctorPayload = {
@@ -62,7 +50,7 @@ export default function AddDoctor() {
           'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80',
       };
 
-      await api.post('/users', doctorPayload);
+      await AuthService.register(doctorPayload)
       navigate('/admin/doctors');
     } catch (err) {
       console.error('Failed to create doctor:', err);

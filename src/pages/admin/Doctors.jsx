@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import {
@@ -15,6 +14,7 @@ import {
   AlertTriangle,
   X
 } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
 
 export default function Doctors() {
   const [doctors, setDoctors] = useState([]);
@@ -26,7 +26,7 @@ export default function Doctors() {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/users?role=DOCTOR');
+      const res = await DoctorService.findAll();
       setDoctors(res.data || []);
     } catch (err) {
       console.error('Failed to load doctors:', err);
@@ -44,11 +44,11 @@ export default function Doctors() {
     if (!deleteTarget) return;
     try {
       setIsDeleting(true);
-      await api.delete(`/users/${deleteTarget.id}`);
+      await DoctorService.deleteDoctor(deleteTarget.id)
       setDoctors((prev) => prev.filter((d) => d.id !== deleteTarget.id));
       setDeleteTarget(null);
     } catch (err) {
-      console.error('Failed to delete doctor:', err);
+      console.error('Failed to delete doctor:', err?.message);
       alert('Failed to delete doctor record. Please try again.');
     } finally {
       setIsDeleting(false);

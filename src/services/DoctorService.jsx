@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import AuthService from "./AuthService";
 
 const url = import.meta.env.VITE_API_URL;
 
@@ -43,6 +44,18 @@ const updateById = async (id, data) => {
     }
 }
 
+const deleteDoctor = async (id) => {
+    try {
+        const user = await findById(id);
+        await axios.delete(`${url}/doctor-profile/${id}`)
+        const deletedUser = await AuthService.deleteSoft(user.data.doctorId)
+        return { success: true, status: 200, data: deletedUser.data };
+    } catch (err) {
+        console.log("Error deleting doctor: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
 
 
-export default { findAll, findById, updateById, findByUserId }
+
+export default { findAll, findById, updateById, findByUserId, deleteDoctor }

@@ -47,8 +47,15 @@
       "name": "demo",
       "password": "123456",
       "role": "PATIENT",
-      "statue": "ACTIVE",
+      "status": "ACTIVE",
       "id": "jMFGZu2pd84"
+    },
+    {
+      "email": "doc@demo.com",
+      "password": "11112332",
+      "role": "DOCTOR",
+      "status": "DELETED",
+      "id": "KNawjXq40pM"
     }
   ],
   "doctor-profile": [
@@ -62,7 +69,10 @@
       "experience": 8,
       "consultationFee": 300,
       "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
-      "availability": "Mon-Fri (09:00 - 17:00)"
+      "availability": "Mon-Fri (09:00 - 17:00)",
+      "email": "doctor@example.com",
+      "password": "password123",
+      "status": "Inactive"
     },
     {
       "id": "3",

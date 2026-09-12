@@ -48,7 +48,7 @@ export function AuthProvider({ children }) {
       }
 
       // Store auth state
-      let authUser = null;
+      let authUser = user;
       if (user.role === 'PATIENT') {
         const result = await PatientService.findByUserId(user.id)
         authUser = { ...result.data[0], role: 'PATIENT' }
