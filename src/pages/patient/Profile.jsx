@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { User, Phone, Calendar, MapPin, CheckCircle2, AlertCircle } from 'lucide-react';
+import DoctorService from '../../services/DoctorService';
 
 export default function PatientProfile() {
   const { user, updateUser } = useAuth();
@@ -28,7 +29,7 @@ export default function PatientProfile() {
     setSuccessMsg('');
     setErrorMsg('');
 
-    const res = await updateUser(formData);
+    const res = await DoctorService.updateById();
     setIsSubmitting(false);
 
     if (res.success) {

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../api/api';
 import AuthService from '../services/AuthService';
+import PatientService from '../services/PatientService';
+import DoctorService from '../services/DoctorService';
 
 const AuthContext = createContext(null);
 
@@ -46,7 +48,16 @@ export function AuthProvider({ children }) {
       }
 
       // Store auth state
-      localStorage.setItem('medical_user', JSON.stringify(user));
+      let authUser = null;
+      if (user.role === 'PATIENT') {
+        const result = await PatientService.findByUserId(user.id)
+        authUser = { ...result.data[0], role: 'PATIENT' }
+      }
+      if (user.role === 'DOCTOR') {
+        const result = await DoctorService.findById(user.id)
+        authUser = { ...result.data[0], role: 'PATIENT' }
+      }
+      localStorage.setItem('medical_user', JSON.stringify(authUser));
       localStorage.setItem('medical_token', `mock_token_${Date.now()}`);
       setUser(user);
 
@@ -64,13 +75,20 @@ export function AuthProvider({ children }) {
   const register = async (userData) => {
     try {
 
-      const createResponse = await AuthService.register(userData);
-      const createdUser = createResponse.data;
-
+      const Response = await AuthService.register(userData);
       // Auto login newly registered patient
+      const result = Response.data;
+      let createdUser = null;
+      if (result.role === 'PATIENT') {
+        createdUser = await PatientService.findById(result.id)
+      }
+      if (result.role === 'DOCTOR') {
+        createdUser = await DoctorService.findById(result.id)
+      }
       localStorage.setItem('medical_user', JSON.stringify(createdUser));
       localStorage.setItem('medical_token', `mock_token_${Date.now()}`);
       setUser(createdUser);
+
 
       return { success: true, user: createdUser };
     } catch (err) {
@@ -109,6 +127,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    setUser,
     loading,
     login,
     register,

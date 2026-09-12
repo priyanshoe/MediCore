@@ -116,7 +116,7 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    user.email.charAt(0).toUpperCase()
+                    user.name.charAt(0).toUpperCase()
                   )}
                 </div>
 

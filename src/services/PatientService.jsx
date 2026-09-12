@@ -1,12 +1,10 @@
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
 
 const url = import.meta.env.VITE_API_URL;
-const { setUser } = useAuth();
 
 const findAll = async () => {
     try {
-        const result = await axios.get(`${url}/doctor-profile`)
+        const result = await axios.get(`${url}/patient-profile`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error finding doctors: ", err)
@@ -16,7 +14,7 @@ const findAll = async () => {
 
 const findById = async (id) => {
     try {
-        const result = await axios.get(`${url}/doctor-profile/${id}`)
+        const result = await axios.get(`${url}/patient-profile/${id}`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error finding doctor: ", err)
@@ -24,18 +22,14 @@ const findById = async (id) => {
     }
 }
 
-const updateById = async (id) => {
+const findByUserId = async (id) => {
     try {
-        const result = await axios.patch(`${url}/doctor-profile/${id}`)
-        const updatedUser = response.data;
-
-        localStorage.setItem('medical_user', JSON.stringify(updatedUser));
-        setUser(updatedUser);
+        const result = await axios.get(`${url}/patient-profile?patientId=${id}`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
-        console.log("Error updating doctor: ", err)
+        console.log("Error finding doctor: ", err)
         throw { success: false, status: err.status || 500, error: err.message };
     }
 }
 
-export default { findAll, findById, updateById }
+export default { findAll, findById, findByUserId }

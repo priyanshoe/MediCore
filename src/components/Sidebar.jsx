@@ -113,7 +113,7 @@ export default function Sidebar({ isOpen, onClose }) {
           <div className="p-2.5 rounded-lg bg-white border border-slate-200 shadow-2xs mb-2">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs shrink-0">
-                {user.email.charAt(0).toUpperCase()}
+                {user.name.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-semibold text-slate-800 truncate">{user.name}</p>
