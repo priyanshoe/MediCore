@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="/banner.png" />
+<img width="1200" height="475" alt="GHBanner" src="./public/banner.png" />
 </div>
 
 # 🏥 MediCore
