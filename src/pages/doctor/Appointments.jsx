@@ -41,8 +41,8 @@ export default function DoctorAppointments() {
 
       const pMap = {};
       patients.forEach((p) => {
-        pMap[p.id] = p;
-        pMap[String(p.id)] = p;
+        pMap[p.patientId] = p;
+        pMap[String(p.patientId)] = p;
       });
       setPatientsMap(pMap);
 

@@ -103,8 +103,8 @@ export default function AppointmentCard({
 
         {/* Doctor view: Patient details */}
         {isDoctor && (
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex items-center justify-between gap-7">
+            <div className="flex items-center gap-2.5 min-w-fit">
               <div className="w-9 h-9 rounded-full bg-teal-50 flex items-center justify-center text-teal-700 font-semibold shrink-0">
                 <User className="w-4 h-4" />
               </div>
