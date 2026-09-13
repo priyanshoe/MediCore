@@ -63,7 +63,7 @@ export function AuthProvider({ children }) {
       return { success: true, user: user };
     } catch (err) {
       console.error('Login error:', err);
-      return { success: false, message: 'An error occurred while logging in. Please try again.' };
+      return { success: false, message: err?.error || 'An error occurred while logging in. Please try again.' };
     }
   };
 
@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
       return { success: true, user: createdUser };
     } catch (err) {
       console.error('Registration error:', err);
-      return { success: false, message: 'Failed to create account. Please try again.' };
+      return { success: false, message: err?.error || 'Failed to create account. Please try again.' };
     }
   };
 

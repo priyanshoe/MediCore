@@ -3,7 +3,7 @@
     {
       "id": "1",
       "name": "Admin User",
-      "email": "admin@example.com",
+      "email": "admin@demo.com",
       "password": "adminpass",
       "role": "ADMIN",
       "status": "Active"
@@ -47,22 +47,6 @@
       "password": "password123",
       "role": "PATIENT",
       "status": "Active"
-    },
-    {
-      "email": "demo@demo.com",
-      "password": "222222222222222222",
-      "role": "DOCTOR",
-      "status": "Active",
-      "id": "yj4Kf78X28U",
-      "name": "demo"
-    },
-    {
-      "name": "demo2",
-      "email": "demo2@demo.com",
-      "password": "222222222",
-      "role": "DOCTOR",
-      "status": "DELETED",
-      "id": "yDJ8syAFGzE"
     }
   ],
   "doctor-profile": [
@@ -101,17 +85,6 @@
       "consultationFee": 750,
       "profileImage": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
       "availability": "Tue-Sat (11:00 - 18:00)"
-    },
-    {
-      "doctorId": "yj4Kf78X28U",
-      "name": "demo",
-      "specialization": "General Medicine",
-      "qualification": "MBBS, DM (Neurology)",
-      "experience": 6,
-      "consultationFee": 22,
-      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
-      "availability": "Mon-Fri (09:00 - 17:00)",
-      "id": "I2DTWhbY7UM"
     }
   ],
   "patient-profile": [
@@ -168,22 +141,12 @@
     {
       "id": "4",
       "patientId": 6,
-      "doctorId": 4,
+      "doctorId": 3,
       "date": "2026-09-22",
       "time": "15:30",
       "reason": "Migraine headache frequency review",
       "status": "PENDING",
       "createdAt": "2026-09-04"
-    },
-    {
-      "patientId": 5,
-      "doctorId": 2,
-      "date": "2026-09-18",
-      "time": "10:00 AM",
-      "reason": "jyhf hj",
-      "status": "PENDING",
-      "createdAt": "9/11/2026, 1:12:41 AM",
-      "id": "phivEWk2mQ8"
     }
   ],
   "prescriptions": [
