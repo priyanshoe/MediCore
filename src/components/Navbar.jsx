@@ -1,7 +1,5 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { resetMockData } from '../api/api';
 import {
   HeartPulse,
   LogOut,
@@ -22,12 +20,6 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
     navigate('/login');
   };
 
-  const handleResetData = () => {
-    if (window.confirm('Reset all demo data (users, appointments, prescriptions) to default initial state?')) {
-      resetMockData();
-      window.location.reload();
-    }
-  };
 
   const getRoleBadge = (role) => {
     if (role === 'ADMIN') {
@@ -87,16 +79,6 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
         <div className="flex items-center gap-2 sm:gap-4">
           {user ? (
             <>
-              {/* Reset seed data button */}
-              <button
-                type="button"
-                onClick={handleResetData}
-                title="Reset local demo database to initial state"
-                className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Reset Demo Data</span>
-              </button>
 
               {/* User profile capsule */}
               <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200">

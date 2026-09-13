@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import AppointmentCard from '../../components/AppointmentCard';

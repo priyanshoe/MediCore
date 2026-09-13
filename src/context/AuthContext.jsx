@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api/api';
 import AuthService from '../services/AuthService';
 import PatientService from '../services/PatientService';
 import DoctorService from '../services/DoctorService';
@@ -106,23 +105,6 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  /**
-   * Update current user profile
-   */
-  const updateUser = async (updates) => {
-    if (!user) return { success: false, message: 'No active session' };
-
-    try {
-      const response = await api.patch(`/users/${user.id}`, updates);
-      const updatedUser = response.data;
-      localStorage.setItem('medical_user', JSON.stringify(updatedUser));
-      setUser(updatedUser);
-      return { success: true, user: updatedUser };
-    } catch (err) {
-      console.error('Profile update error:', err);
-      return { success: false, message: 'Failed to update profile.' };
-    }
-  };
 
   const value = {
     user,
@@ -131,7 +113,6 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
-    updateUser,
     isAuthenticated: !!user,
   };
 

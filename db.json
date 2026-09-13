@@ -61,7 +61,7 @@
       "email": "demo2@demo.com",
       "password": "222222222",
       "role": "DOCTOR",
-      "status": "Inactive",
+      "status": "DELETED",
       "id": "yDJ8syAFGzE"
     }
   ],
@@ -112,20 +112,6 @@
       "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
       "availability": "Mon-Fri (09:00 - 17:00)",
       "id": "I2DTWhbY7UM"
-    },
-    {
-      "doctorId": "yDJ8syAFGzE",
-      "name": "demo2",
-      "specialization": "General Medicine",
-      "qualification": "MBBS, DM (Neurology)",
-      "experience": 2,
-      "consultationFee": 50,
-      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
-      "availability": "Mon-Fri (09:00 - 17:00)",
-      "id": "MMPPDo8nSwg",
-      "email": "demo2@demo.com",
-      "password": "222222222",
-      "phone": "222222222"
     }
   ],
   "patient-profile": [

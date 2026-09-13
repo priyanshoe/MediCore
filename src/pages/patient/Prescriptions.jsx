@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { FileText, Stethoscope, Calendar, Pill, Clock, AlertCircle } from 'lucide-react';
