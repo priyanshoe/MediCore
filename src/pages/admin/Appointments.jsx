@@ -4,6 +4,8 @@ import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { getStatusBadge } from '../../components/AppointmentCard';
 import { Calendar, Filter, User, Stethoscope, Clock, FileText } from 'lucide-react';
+import AppointmentService from '../../services/AppointmentService';
+import AuthService from '../../services/AuthService';
 
 export default function Appointments() {
   const [appointments, setAppointments] = useState([]);
@@ -17,8 +19,10 @@ export default function Appointments() {
       try {
         setLoading(true);
         const [apptsRes, usersRes] = await Promise.all([
-          api.get('/appointments'),
-          api.get('/users'),
+          AppointmentService.findAll(),
+          AuthService.findAll(),
+          // api.get('/appointments'),
+          // api.get('/users'),
         ]);
 
         const appts = apptsRes.data || [];
@@ -67,11 +71,10 @@ export default function Appointments() {
               key={st}
               type="button"
               onClick={() => setFilterStatus(st)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                filterStatus === st
-                  ? 'bg-teal-600 text-white shadow-2xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${filterStatus === st
+                ? 'bg-teal-600 text-white shadow-2xs'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
             >
               {st}
             </button>
@@ -105,7 +108,7 @@ export default function Appointments() {
                   <th className="px-4 py-3">Patient</th>
                   <th className="px-4 py-3">Doctor & Specialization</th>
                   <th className="px-4 py-3">Schedule Date & Time</th>
-                  <th className="px-4 py-3">Reason</th>
+                  <th className="px-2 py-3">Reason</th>
                   <th className="px-4 py-3">Created</th>
                   <th className="px-4 py-3 text-right">Status</th>
                 </tr>
@@ -147,7 +150,7 @@ export default function Appointments() {
                           <span>{appt.time}</span>
                         </div>
                       </td>
-                      <td className="px-4 py-3.5 text-xs text-slate-600 max-w-xs truncate">
+                      <td className="px-4 py-3.5 text-xs text-slate-600 max-w-xs text-wrap truncate">
                         {appt.reason || 'General checkup'}
                         {appt.rejectionReason && (
                           <span className="block text-rose-500 text-[11px] truncate">

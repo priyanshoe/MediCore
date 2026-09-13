@@ -7,7 +7,8 @@ const url = import.meta.env.VITE_API_URL;
 async function findAll() {
     try {
         const result = await axios.get(url + "/users")
-        return { success: true, status: 200, data: result.data };
+        const users = result.data.map(({ password, ...user }) => user);
+        return { success: true, status: 200, data: users };
     } catch (err) {
         console.log("Error in fetching Doctors", err);
         throw { success: false, status: err.status || 500, error: err.message };
@@ -27,7 +28,8 @@ const findByEmail = async (email) => {
 const findById = async (id) => {
     try {
         const result = await axios.get(`${url}/users/${id}`)
-        return { success: true, status: 200, data: result.data };
+        const { password, ...user } = result.data;
+        return { success: true, status: 200, data: user };
     } catch (err) {
         console.log("Error finding user by email:", err)
         throw { success: false, status: err.status || 500, error: err.message };
@@ -44,6 +46,18 @@ const updateStatus = async (id, status) => {
     }
 }
 
+const update = async (id, data) => {
+    try {
+        delete data?.password;
+        delete data?.id;
+        const result = await axios.patch(`${url}/users/${id}`, data)
+        return { success: true, status: 200, data: result.data };
+    } catch (err) {
+        console.log("Error updating status: ", err)
+        throw { success: false, status: err.status || 500, error: err.message };
+    }
+}
+
 const register = async (data) => {
     try {
         const user = await findByEmail(data?.email);
@@ -51,6 +65,7 @@ const register = async (data) => {
             throw { status: 402, message: "user already exist" };
         }
         const userData = {
+            name: data?.name,
             email: data?.email,
             password: data?.password,
             role: data?.role,
@@ -117,4 +132,4 @@ async function deleteSoft(id) {
 
 
 
-export default { register, login, findAll, findById, findByEmail, deleteSoft }
+export default { register, login, findAll, findById, findByEmail, update, deleteSoft }

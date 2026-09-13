@@ -133,10 +133,10 @@ export default function Doctors() {
                       <p className="text-xs text-slate-500 mt-1">{doc.qualification || 'MBBS'}</p>
                     </td>
                     <td className="px-4 py-3.5 text-xs">
-                      <div className="flex items-center gap-1.5 text-slate-700">
+                      {/* <div className="flex items-center gap-1.5 text-slate-700">
                         <Mail className="w-3.5 h-3.5 text-slate-400" />
                         <span>{doc.email}</span>
-                      </div>
+                      </div> */}
                       <div className="flex items-center gap-1.5 text-slate-500 mt-1">
                         <Phone className="w-3.5 h-3.5 text-slate-400" />
                         <span>{doc.phone || 'N/A'}</span>

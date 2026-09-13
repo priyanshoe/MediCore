@@ -20,7 +20,6 @@ export default function EditDoctor() {
     consultationFee: '',
     profileImage: '',
     availability: '',
-    status: 'Active',
   });
 
   const [loading, setLoading] = useState(true);
@@ -50,7 +49,6 @@ export default function EditDoctor() {
           consultationFee: doc.consultationFee !== undefined ? doc.consultationFee : '',
           profileImage: doc.profileImage || '',
           availability: doc.availability || 'Mon-Fri',
-          status: doc.status || 'Active',
         });
       } catch (err) {
         console.error('Failed to load doctor:', err);
@@ -252,7 +250,7 @@ export default function EditDoctor() {
             />
           </div>
 
-          <div>
+          {/* <div>
             <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
               Account Status
             </label>
@@ -265,7 +263,7 @@ export default function EditDoctor() {
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-          </div>
+          </div> */}
         </div>
 
         <div>

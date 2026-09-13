@@ -10,6 +10,7 @@
     },
     {
       "id": "2",
+      "name": "Dr. Rahul Sharma",
       "email": "doctor@example.com",
       "password": "password123",
       "role": "DOCTOR",
@@ -17,6 +18,7 @@
     },
     {
       "id": "3",
+      "name": "Dr. Amit Patel",
       "email": "sarah.jenkins@example.com",
       "password": "password123",
       "role": "DOCTOR",
@@ -24,6 +26,7 @@
     },
     {
       "id": "4",
+      "name": "Dr. Sarah Jenkins",
       "email": "amit.patel@example.com",
       "password": "password123",
       "role": "DOCTOR",
@@ -31,6 +34,7 @@
     },
     {
       "id": "5",
+      "name": "John Doe",
       "email": "patient@example.com",
       "password": "password123",
       "role": "PATIENT",
@@ -38,24 +42,27 @@
     },
     {
       "id": "6",
+      "name": "Emily Watson",
       "email": "emily@example.com",
       "password": "password123",
       "role": "PATIENT",
       "status": "Active"
     },
     {
-      "name": "demo",
-      "password": "123456",
-      "role": "PATIENT",
-      "status": "ACTIVE",
-      "id": "jMFGZu2pd84"
+      "email": "demo@demo.com",
+      "password": "222222222222222222",
+      "role": "DOCTOR",
+      "status": "Active",
+      "id": "yj4Kf78X28U",
+      "name": "demo"
     },
     {
-      "email": "doc@demo.com",
-      "password": "11112332",
+      "name": "demo2",
+      "email": "demo2@demo.com",
+      "password": "222222222",
       "role": "DOCTOR",
-      "status": "DELETED",
-      "id": "KNawjXq40pM"
+      "status": "Inactive",
+      "id": "yDJ8syAFGzE"
     }
   ],
   "doctor-profile": [
@@ -69,10 +76,7 @@
       "experience": 8,
       "consultationFee": 300,
       "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
-      "availability": "Mon-Fri (09:00 - 17:00)",
-      "email": "doctor@example.com",
-      "password": "password123",
-      "status": "Inactive"
+      "availability": "Mon-Fri (09:00 - 17:00)"
     },
     {
       "id": "3",
@@ -90,12 +94,38 @@
       "id": "4",
       "doctorId": 4,
       "name": "Dr. Sarah Jenkins",
+      "phone": "9876543211",
       "specialization": "Neurology",
       "qualification": "MBBS, DM (Neurology)",
       "experience": 12,
       "consultationFee": 750,
       "profileImage": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
       "availability": "Tue-Sat (11:00 - 18:00)"
+    },
+    {
+      "doctorId": "yj4Kf78X28U",
+      "name": "demo",
+      "specialization": "General Medicine",
+      "qualification": "MBBS, DM (Neurology)",
+      "experience": 6,
+      "consultationFee": 22,
+      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
+      "availability": "Mon-Fri (09:00 - 17:00)",
+      "id": "I2DTWhbY7UM"
+    },
+    {
+      "doctorId": "yDJ8syAFGzE",
+      "name": "demo2",
+      "specialization": "General Medicine",
+      "qualification": "MBBS, DM (Neurology)",
+      "experience": 2,
+      "consultationFee": 50,
+      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
+      "availability": "Mon-Fri (09:00 - 17:00)",
+      "id": "MMPPDo8nSwg",
+      "email": "demo2@demo.com",
+      "password": "222222222",
+      "phone": "222222222"
     }
   ],
   "patient-profile": [
@@ -116,15 +146,6 @@
       "dateOfBirth": "2001-11-22",
       "gender": "Female",
       "address": "45 Lakeview Drive, Sunnyvale"
-    },
-    {
-      "patientId": "jMFGZu2pd84",
-      "name": "Demo Watson",
-      "phone": "3456676543",
-      "dateOfBirth": "2026-09-08",
-      "gender": "Male",
-      "address": "ewrf wefefwefewf",
-      "id": "5IKwzwSj5xQ"
     }
   ],
   "appointments": [
@@ -167,26 +188,6 @@
       "reason": "Migraine headache frequency review",
       "status": "PENDING",
       "createdAt": "2026-09-04"
-    },
-    {
-      "patientId": "jMFGZu2pd84",
-      "doctorId": 3,
-      "date": "2026-09-17",
-      "time": "10:00 AM",
-      "reason": "sacs sawsd",
-      "status": "CANCELLED",
-      "createdAt": "2026-09-10",
-      "id": "WVVXokkg4SE"
-    },
-    {
-      "patientId": "jMFGZu2pd84",
-      "doctorId": 2,
-      "date": "2026-09-17",
-      "time": "11:15 AM",
-      "reason": "adasd wdwad w",
-      "status": "PENDING",
-      "createdAt": "9/11/2026",
-      "id": "HWlmXEED0Cc"
     },
     {
       "patientId": 5,

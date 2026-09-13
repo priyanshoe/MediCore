@@ -54,7 +54,7 @@ export default function AddDoctor() {
       navigate('/admin/doctors');
     } catch (err) {
       console.error('Failed to create doctor:', err);
-      setError('Failed to save doctor. Please try again.');
+      setError(err?.error || 'Failed to save doctor. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

@@ -3,6 +3,8 @@ import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { Users, Mail, Phone, Calendar, MapPin, User, Search } from 'lucide-react';
+import PatientService from '../../services/PatientService';
+import AppointmentService from '../../services/AppointmentService';
 
 export default function Patients() {
   const [patients, setPatients] = useState([]);
@@ -16,8 +18,8 @@ export default function Patients() {
       try {
         setLoading(true);
         const [patientsRes, apptsRes] = await Promise.all([
-          api.get('/users?role=PATIENT'),
-          api.get('/appointments'),
+          PatientService.findAll(),
+          AppointmentService.findAll(),
         ]);
         setPatients(patientsRes.data || []);
         setAppointments(apptsRes.data || []);
@@ -35,7 +37,6 @@ export default function Patients() {
     const q = search.toLowerCase();
     return (
       (p.name && p.name.toLowerCase().includes(q)) ||
-      (p.email && p.email.toLowerCase().includes(q)) ||
       (p.phone && p.phone.toLowerCase().includes(q))
     );
   });
@@ -96,7 +97,7 @@ export default function Patients() {
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {filteredPatients.map((patient) => {
-                  const patientAppts = appointments.filter((a) => a.patientId === patient.id);
+                  const patientAppts = appointments.filter((a) => a.patientId === patient.patientId);
                   // Calculate rough age if DOB exists
                   let age = null;
                   if (patient.dateOfBirth) {
@@ -119,10 +120,10 @@ export default function Patients() {
                         </div>
                       </td>
                       <td className="px-4 py-3.5 text-xs">
-                        <div className="flex items-center gap-1.5 text-slate-700">
+                        {/* <div className="flex items-center gap-1.5 text-slate-700">
                           <Mail className="w-3.5 h-3.5 text-slate-400" />
                           <span>{patient.email}</span>
-                        </div>
+                        </div> */}
                         <div className="flex items-center gap-1.5 text-slate-500 mt-1">
                           <Phone className="w-3.5 h-3.5 text-slate-400" />
                           <span>{patient.phone || 'N/A'}</span>

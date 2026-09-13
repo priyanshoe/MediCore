@@ -14,6 +14,8 @@ import {
   ArrowRight,
   AlertCircle
 } from 'lucide-react';
+import AuthService from '../../services/AuthService';
+import AppointmentService from '../../services/AppointmentService';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -33,8 +35,8 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
         const [usersRes, appointmentsRes] = await Promise.all([
-          api.get('/users'),
-          api.get('/appointments'),
+          AuthService.findAll(),
+          AppointmentService.findAll(),
         ]);
 
         const users = usersRes.data || [];

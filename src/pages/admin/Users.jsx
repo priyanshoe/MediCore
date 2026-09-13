@@ -14,6 +14,7 @@ import {
   XCircle,
   Filter
 } from 'lucide-react';
+import AuthService from '../../services/AuthService';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -33,7 +34,7 @@ export default function Users() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/users');
+      const res = await AuthService.findAll();
       setUsers(res.data || []);
     } catch (err) {
       console.error('Failed to load users:', err);
@@ -63,7 +64,7 @@ export default function Users() {
 
     try {
       setIsUpdating(true);
-      const res = await api.patch(`/users/${editUser.id}`, editFormData);
+      const res = await AuthService.update(editUser.id, editFormData);
       setUsers((prev) => prev.map((u) => (u.id === editUser.id ? res.data : u)));
       setEditUser(null);
     } catch (err) {
@@ -78,7 +79,7 @@ export default function Users() {
     if (!deleteTarget) return;
     try {
       setIsDeleting(true);
-      await api.delete(`/users/${deleteTarget.id}`);
+      await AuthService.deleteSoft(deleteTarget.id);
       setUsers((prev) => prev.filter((u) => u.id !== deleteTarget.id));
       setDeleteTarget(null);
     } catch (err) {
@@ -139,11 +140,10 @@ export default function Users() {
               key={r}
               type="button"
               onClick={() => setRoleFilter(r)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                roleFilter === r
-                  ? 'bg-teal-600 text-white shadow-2xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${roleFilter === r
+                ? 'bg-teal-600 text-white shadow-2xs'
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
             >
               {r}
             </button>
@@ -175,6 +175,7 @@ export default function Users() {
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {filteredUsers.map((u) => (
+                  u.status !== 'DELETED' &&
                   <tr key={u.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-4 py-3.5 font-mono text-xs font-semibold text-slate-500">
                       #{u.id}
