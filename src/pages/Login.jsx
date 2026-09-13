@@ -124,14 +124,14 @@ export default function Login() {
             <Sparkles className="w-3.5 h-3.5 text-teal-600" />
             <span>Quick Demo Accounts (Click to Fill):</span>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <button
+          <div className="grid grid-cols-2 gap-2">
+            {/* <button
               type="button"
               onClick={() => fillDemoAccount('admin@example.com', 'password123')}
               className="px-2.5 py-1.5 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 rounded-lg text-xs font-medium text-center transition-colors"
             >
               Admin
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={() => fillDemoAccount('doctor@example.com', 'password123')}
