@@ -27,6 +27,8 @@ export default function Login() {
 
     if (result.success) {
       // Role-based redirection
+      console.log(result);
+      
       if (result.user.role === 'ADMIN') {
         navigate('/admin/dashboard');
       } else if (result.user.role === 'DOCTOR') {
@@ -134,7 +136,7 @@ export default function Login() {
             </button>
             <button
               type="button"
-              onClick={() => fillDemoAccount('doctor@example.com', 'password123')}
+              onClick={() => fillDemoAccount('doctor@gmail.com', 'doctorpass')}
               className="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-lg text-xs font-medium text-center transition-colors"
             >
               Doctor

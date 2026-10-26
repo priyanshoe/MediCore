@@ -37,34 +37,35 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       const response = await AuthService.login(email, password);
-      const user = response.data || [];
+      const data = response.data || [];
 
-      if (!user) {
+      if (!data) {
         return { success: false, message: 'Invalid email or password.' };
       }
 
-      if (user.status === 'Inactive') {
+      if (data.user?.status === 'Inactive') {
         return { success: false, message: 'Your account is deactivated. Please contact an Admin.' };
       }
 
       // Store auth state
-      let authUser = user;
-      if (user.role === 'PATIENT') {
-        const result = await PatientService.findByUserId(user.id)
-        authUser = { ...result.data[0], role: 'PATIENT' }
-      }
-      if (user.role === 'DOCTOR') {
-        const result = await DoctorService.findByUserId(user.id)
-        authUser = { ...result.data[0], role: 'DOCTOR' }
-      }
+      let authUser = data.user;
+
+      // if (user.role === 'PATIENT') {
+      //   const result = await PatientService.findByUserId(user.id)
+      //   authUser = { ...result.data[0], role: 'PATIENT' }
+      // }
+      // if (user.role === 'DOCTOR') {
+      //   const result = await DoctorService.findByUserId(user.id)
+      //   authUser = { ...result.data[0], role: 'DOCTOR' }
+      // }
       localStorage.setItem('medical_user', JSON.stringify(authUser));
-      localStorage.setItem('medical_token', `mock_token_${Date.now()}`);
+      localStorage.setItem('medical_token', data.token);
       setUser(authUser);
 
-      return { success: true, user: user };
+      return { success: true, user: data.user };
     } catch (err) {
       console.error('Login error:', err);
-      return { success: false, message: 'An error occurred while logging in. Please try again.' };
+      return { success: false, message: err?.error || 'An error occurred while logging in. Please try again.' };
     }
   };
 
@@ -93,7 +94,7 @@ export function AuthProvider({ children }) {
       return { success: true, user: createdUser };
     } catch (err) {
       console.error('Registration error:', err);
-      return { success: false, message: 'Failed to create account. Please try again.' };
+      return { success: false, message: err?.error || 'Failed to create account. Please try again.' };
     }
   };
 

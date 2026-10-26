@@ -1,7 +1,7 @@
 import axios from "axios";
 import PatientService from "./PatientService";
 
-const url = import.meta.env.VITE_API_URL;
+const url = import.meta.env.VITE_API_URL+"/auth";
 
 
 async function findAll() {
@@ -60,10 +60,6 @@ const update = async (id, data) => {
 
 const register = async (data) => {
     try {
-        const user = await findByEmail(data?.email);
-        if (user) {
-            throw { status: 402, message: "user already exist" };
-        }
         const userData = {
             name: data?.name,
             email: data?.email,
@@ -71,18 +67,13 @@ const register = async (data) => {
             role: data?.role,
             status: "ACTIVE"
         }
-        const result = await axios.post(url + "/users", userData)
-        delete result.data.password;
-
         const profileData = data?.role === 'PATIENT' ? {
-            patientId: result?.data?.id,
             name: data?.name,
             phone: data?.phone,
             dateOfBirth: data?.dateOfBirth,
-            gender: data?.gender,
+            gender: data?.gender.toUpperCase(),
             address: data?.address
         } : data?.role === 'DOCTOR' ? {
-            doctorId: result?.data?.id,
             name: data?.name,
             specialization: data?.specialization,
             qualification: data?.qualification,
@@ -91,29 +82,25 @@ const register = async (data) => {
             profileImage: data?.profileImage || "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
             availability: data?.availability
         } : {}
-        await axios.post(url + `/${data.role.toLowerCase()}-profile`, profileData)
+        const result = await axios.post(url + `/sign-up/${data.role.toLowerCase()}`,{ user:userData, profile:profileData})
         return { success: true, status: 200, data: result.data };
     } catch (err) {
-        console.log("Error in resigtration", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        console.log("Error in resigtration", err?.response)
+        throw { success: false, status: err.status || 500, error: err.response?.data.message || err.message  };
     }
 }
 
 async function login(email, password) {
     try {
-        const user = await findByEmail(email);
-        if (!user) {
-            throw { status: 404, message: "user not fount" }
-        }
-        if (password !== user?.password) {
-            throw { status: 409, message: "bad credentials" }
-        }
-        delete user.password;
-        delete user.email;
-        return { success: true, status: 200, data: user };
+        const userData = {
+            email: email,
+            password: password
+        };
+        const result = await axios.post(url + "/sign-in", userData)
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
-        console.log("Error in login", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        console.log("Error in login", err?.response)
+        throw { success: false, status: err.status || 500, error: err.response?.data.message || err.message  };
 
     }
 }
