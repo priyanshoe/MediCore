@@ -4,38 +4,6 @@ import PatientService from "./PatientService";
 const url = import.meta.env.VITE_API_URL+"/auth";
 
 
-async function findAll() {
-    try {
-        const result = await axios.get(url + "/users")
-        const users = result.data.map(({ password, ...user }) => user);
-        return { success: true, status: 200, data: users };
-    } catch (err) {
-        console.log("Error in fetching Doctors", err);
-        throw { success: false, status: err.status || 500, error: err.message };
-    }
-}
-
-const findByEmail = async (email) => {
-    try {
-        const result = await axios.get(`${url}/users?email=${encodeURIComponent(email)}`)
-        return result.data[0] || null
-    } catch (err) {
-        console.log("Error finding user by email:", err)
-        throw { success: false, status: err.status || 500, error: err.message };
-    }
-}
-
-const findById = async (id) => {
-    try {
-        const result = await axios.get(`${url}/users/${id}`)
-        const { password, ...user } = result.data;
-        return { success: true, status: 200, data: user };
-    } catch (err) {
-        console.log("Error finding user by email:", err)
-        throw { success: false, status: err.status || 500, error: err.message };
-    }
-}
-
 const updateStatus = async (id, status) => {
     try {
         const result = await axios.patch(`${url}/users/${id}`, { status: status })
@@ -83,9 +51,9 @@ const register = async (data) => {
             availability: data?.availability
         } : {}
         const result = await axios.post(url + `/sign-up/${data.role.toLowerCase()}`,{ user:userData, profile:profileData})
-        return { success: true, status: 200, data: result.data };
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
-        console.log("Error in resigtration", err?.response)
+        console.log("Error in registration", err?.response)
         throw { success: false, status: err.status || 500, error: err.response?.data.message || err.message  };
     }
 }
@@ -119,4 +87,4 @@ async function deleteSoft(id) {
 
 
 
-export default { register, login, findAll, findById, findByEmail, update, deleteSoft }
+export default { register, login, update, deleteSoft }

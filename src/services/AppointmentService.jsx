@@ -4,41 +4,43 @@ const url = import.meta.env.VITE_API_URL;
 
 const findAll = async () => {
     try {
-        const result = await axios.get(`${url}/appointments`)
+        const result = await axios.get(`${url}/appointment`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error finding appointments: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500, error: err.response?.data.message ||  err.message };
     }
 }
 
 const findById = async (id) => {
     try {
-        const result = await axios.get(`${url}/appointments/${id}`)
+        const result = await axios.get(`${url}/appointment/${id}`)
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error finding appointment: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500, error: err.response?.data.message ||  err.message };
     }
 }
 
-const findByPatientId = async (id) => {
+const findByPatient = async () => {
     try {
-        const result = await axios.get(`${url}/appointments?patientId=${id}`)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.get(`${url}/appointment/patient`, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error finding appointments: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500, error: err.response?.data.message ||  err.message };
     }
 }
 
-const findByDoctortId = async (id) => {
+const findByDoctor = async () => {
     try {
-        const result = await axios.get(`${url}/appointments?doctorId=${id}`)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.get(`${url}/appointment/doctor`, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error finding appointments: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500, error: err.response?.data.message ||  err.message };
     }
 }
 
@@ -63,4 +65,4 @@ const save = async (data) => {
 }
 
 
-export default { findAll, findById, findByPatientId, findByDoctortId, updateStatus, save }
+export default { findAll, findById, findByPatient, findByDoctor, updateStatus, save }

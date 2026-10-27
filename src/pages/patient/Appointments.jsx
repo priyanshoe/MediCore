@@ -25,29 +25,21 @@ export default function PatientAppointments() {
     if (!user) return;
     try {
       setLoading(true);
-      const [apptsRes, doctorsRes, prescRes] = await Promise.all([
-        AppointmentService.findByPatientId(user.patientId),
-        DoctorService.findAll(),
-        PrescriptionService.findAll()
+      const [apptsRes, prescRes] = await Promise.all([
+        AppointmentService.findByPatient(),
+        // PrescriptionService.findAll()
       ]);
-
+      
       const appts = apptsRes.data || [];
-      const doctors = doctorsRes.data || [];
-      const prescriptions = prescRes.data || [];
+      // const prescriptions = prescRes.data || [];
 
-      const dMap = {};
-      doctors.forEach((d) => {
-        dMap[d.id] = d;
-        dMap[String(d.id)] = d;
-      });
-      setDoctorsMap(dMap);
 
-      const prMap = {};
-      prescriptions.forEach((pr) => {
-        prMap[pr.appointmentId] = pr;
-        prMap[String(pr.appointmentId)] = pr;
-      });
-      setPrescriptionsMap(prMap);
+      // const prMap = {};
+      // prescriptions.forEach((pr) => {
+      //   prMap[pr.appointmentId] = pr;
+      //   prMap[String(pr.appointmentId)] = pr;
+      // });
+      // setPrescriptionsMap(prMap);
 
       setAppointments(appts);
     } catch (err) {
@@ -151,7 +143,7 @@ export default function PatientAppointments() {
             <AppointmentCard
               key={appt.id}
               appointment={appt}
-              doctor={doctorsMap[appt.doctorId]}
+              doctor={appt.doctor}
               role="PATIENT"
               hasPrescription={!!prescriptionsMap[appt.id]}
               onCancel={handleCancel}

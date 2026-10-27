@@ -28,29 +28,19 @@ export default function DoctorAppointments() {
     if (!user) return;
     try {
       setLoading(true);
-      const [apptsRes, patientsRes, prescriptionsRes] = await Promise.all([
-        AppointmentService.findByDoctortId(user.doctorId),
-        PatientService.findAll(),
-        PrescriptionService.findAll(),
-        // api.get(`/prescriptions?doctorId=${user.id}`),
+      const [apptsRes, prescriptionsRes] = await Promise.all([
+        AppointmentService.findByDoctor(),
+        // PrescriptionService.findAll(),
       ]);
 
       const appts = apptsRes.data || [];
-      const patients = patientsRes.data || [];
-      const prescriptions = prescriptionsRes.data || [];
+      // const prescriptions = prescriptionsRes.data || [];
 
-      const pMap = {};
-      patients.forEach((p) => {
-        pMap[p.id] = p;
-        pMap[String(p.id)] = p;
-      });
-      setPatientsMap(pMap);
-
-      const prescMap = {};
-      prescriptions.forEach((pr) => {
-        prescMap[pr.appointmentId] = pr;
-      });
-      setPrescriptionsMap(prescMap);
+      // const prescMap = {};
+      // prescriptions.forEach((pr) => {
+      //   prescMap[pr.appointmentId] = pr;
+      // });
+      // setPrescriptionsMap(prescMap);
 
       setAppointments(appts);
     } catch (err) {
@@ -155,7 +145,7 @@ export default function DoctorAppointments() {
             <AppointmentCard
               key={appt.id}
               appointment={appt}
-              patient={patientsMap[appt.patientId]}
+              patient={appt.patient}
               role="DOCTOR"
               hasPrescription={!!prescriptionsMap[appt.id]}
               onAccept={handleAccept}
