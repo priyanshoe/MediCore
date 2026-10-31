@@ -44,43 +44,33 @@ export default function DoctorPatientProfile() {
       setError('');
 
       // 1. Fetch patient record
-      let foundPatient = null;
       try {
         const res = await PatientService.findById(currentPatientId);
-        if (res.data) {
-          foundPatient = res.data;
-        }
+          setPatient(res.data);
       } catch (err) {
-        // Fallback to searching all patients
-      }
-
-      if (!foundPatient) {
-        const listRes = await PatientService.findAll();
-        const patients = listRes.data || [];
-        foundPatient = patients.find((p) => String(p.id) === String(currentPatientId));
-      }
-
-      if (!foundPatient) {
         setError('Patient record could not be found.');
         setLoading(false);
         return;
+        // Fallback to searching all patients
       }
-
-      setPatient(foundPatient);
 
       // 2. Fetch appointments between this doctor and this patient
-      if (user) {
-        const apptsRes = await AppointmentService.findByDoctortId(user.doctorId);
-        const allAppts = apptsRes.data || [];
-        const filtered = allAppts
-          .filter((a) => String(a.patientId) === String(currentPatientId))
-          .sort((a, b) => (b.date > a.date ? 1 : -1));
-        setPatientAppointments(filtered);
-      }
+      // if (user) {
+      //   const apptsRes = await AppointmentService.findByDoctortId(user.doctorId);
+      //   const allAppts = apptsRes.data || [];
+      //   const filtered = allAppts
+      //     .filter((a) => String(a.patientId) === String(currentPatientId))
+      //     .sort((a, b) => (b.date > a.date ? 1 : -1));
+      //   setPatientAppointments(filtered);
+      // }
+
+
+
     } catch (err) {
       console.error('Failed to load patient profile:', err);
       setError('Failed to fetch patient profile details.');
-    } finally {
+    }
+     finally {
       setLoading(false);
     }
   };

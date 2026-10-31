@@ -46,11 +46,15 @@ const findByDoctor = async () => {
 
 const updateStatus = async (id, status) => {
     try {
-        const result = await axios.patch(`${url}/appointments/${id}`, { status: status })
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.patch(`${url}/appointment/${id}`, JSON.stringify(status),
+         {headers:{ 
+            Authorization: "Bearer "+token,        
+            "Content-Type": "application/json"}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error updating appointment: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,  error: err.response?.data.message || err.message };
     }
 }
 
@@ -60,7 +64,7 @@ const save = async (data) => {
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error creating appointment: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,  error: err.response?.data.message || err.message };
     }
 }
 

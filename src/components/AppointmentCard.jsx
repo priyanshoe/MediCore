@@ -112,17 +112,17 @@ export default function AppointmentCard({
               <div className="min-w-0">
                 <p className="text-xs text-slate-400">Patient</p>
                 <Link
-                  to={`/doctor/patients/${appointment.patientId}`}
+                  to={`/doctor/patients/${patient.id}`}
                   className="font-semibold text-slate-900 hover:text-teal-600 transition-colors truncate block"
                   title="Click to view patient profile"
                 >
-                  {patient?.name || `Patient #${appointment.patientId}`}
+                  {patient?.name || `Patient #${patient.id}`}
                 </Link>
                 <p className="text-xs text-slate-500 truncate">{patient?.phone || patient?.email || 'No contact specified'}</p>
               </div>
             </div>
             <Link
-              to={`/doctor/patients/${appointment.patientId}`}
+              to={`/doctor/patients/${patient.id}`}
               className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-teal-700 bg-teal-50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-colors shrink-0"
               title="Inspect patient profile before deciding"
             >

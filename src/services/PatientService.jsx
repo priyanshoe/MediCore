@@ -5,21 +5,23 @@ const url = import.meta.env.VITE_API_URL;
 
 const findAll = async () => {
     try {
-        const result = await axios.get(`${url}/patient-profile`)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.get(`${url}/profile/patient`, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error finding doctors: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,error: err.response?.data.message ||  err.message };
     }
 }
 
 const findById = async (id) => {
     try {
-        const result = await axios.get(`${url}/patient-profile/${id}`)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.get(`${url}/profile/patient/${id}`, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error finding doctor: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500, error: err.response?.data.message ||  err.message };
     }
 }
 
@@ -29,7 +31,7 @@ const findByUserId = async (id) => {
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error finding doctor: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,error: err.response?.data.message ||  err.message };
     }
 }
 
@@ -39,7 +41,7 @@ const updateById = async (id, data) => {
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error updating doctor: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,error: err.response?.data.message ||  err.message };
     }
 }
 
