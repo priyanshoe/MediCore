@@ -4,14 +4,15 @@ import { User, Phone, Calendar, MapPin, CheckCircle2, AlertCircle } from 'lucide
 import PatientService from '../../services/PatientService';
 
 export default function PatientProfile() {
-  const { user, setUser, updateUser } = useAuth();
+  const { user, setUser, profile, updateUser } = useAuth();
+  
 
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    phone: user?.phone || '',
-    dateOfBirth: user?.dateOfBirth || '',
-    gender: user?.gender || 'Male',
-    address: user?.address || '',
+    name: profile?.name || '',
+    phone: profile?.phone || '',
+    dateOfBirth: profile?.dateOfBirth?.split("T")[0] || '',
+    gender: profile?.gender || 'Male',
+    address: profile?.address || '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,7 +30,7 @@ export default function PatientProfile() {
     setSuccessMsg('');
     setErrorMsg('');
 
-    const res = await PatientService.updateById(user?.id, formData);
+    const res = await PatientService.updateById(profile?.id, formData);
     const authUser = { ...res.data, role: 'PATIENT' }
     localStorage.setItem('medical_user', JSON.stringify(authUser));
     setUser(authUser);
@@ -37,8 +38,10 @@ export default function PatientProfile() {
 
     if (res.success) {
       setSuccessMsg('Your patient profile was updated successfully.');
+      setIsSubmitting(false);
     } else {
       setErrorMsg(res.message || 'Failed to update profile.');
+      setIsSubmitting(false);
     }
   };
 

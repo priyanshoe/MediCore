@@ -153,7 +153,7 @@ export default function PatientDoctorProfile() {
           {/* Action Button */}
           <div className="shrink-0 flex flex-col sm:flex-row md:flex-col gap-2.5">
             <Link
-              to={`/patient/doctors/${doctor.id}/book`}
+              to={`/patient/doctors/${doctor.userId}/book`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 rounded-xl shadow-xs transition-colors"
             >
               <Calendar className="w-4 h-4" />
@@ -251,7 +251,7 @@ export default function PatientDoctorProfile() {
           </p>
         </div>
         <Link
-          to={`/patient/doctors/${doctor.id}/book`}
+          to={`/patient/doctors/${doctor.userId}/book`}
           className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-teal-600 hover:bg-teal-700 rounded-lg shadow-xs transition-colors shrink-0"
         >
           <Calendar className="w-4 h-4" />

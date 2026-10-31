@@ -28,8 +28,8 @@ const findById = async (id) => {
 
 const findByUserId = async (id) => {
     try {
-        const result = await axios.get(`${url}/doctor-profile?doctorId=${id}`)
-        return { success: true, status: 200, data: result.data };
+        const result = await axios.get(`${url}/doctor-profile?doctorId=${id}`, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error finding doctor: ", err)
         throw { success: false, status: err.status || 500, error: err.message };
@@ -38,11 +38,12 @@ const findByUserId = async (id) => {
 
 const updateById = async (id, data) => {
     try {
-        const result = await axios.patch(`${url}/doctor-profile/${id}`, data)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.put(`${url}/profile/doctor/${id}`, data, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error updating doctor: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,error: err.response?.data.message || err.message };
     }
 }
 
@@ -54,7 +55,7 @@ const deleteDoctor = async (id) => {
         return { success: true, status: 200, data: deletedUser.data };
     } catch (err) {
         console.log("Error deleting doctor: ", err)
-        throw { success: false, status: err.status || 500, error: err.message };
+        throw { success: false, status: err.status || 500,error: err.response?.data.message || err.message };
     }
 }
 

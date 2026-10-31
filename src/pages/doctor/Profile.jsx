@@ -4,17 +4,17 @@ import { User, Phone, Stethoscope, Award, DollarSign, Clock, CheckCircle2, Alert
 import DoctorService from '../../services/DoctorService';
 
 export default function DoctorProfile() {
-  const { user, setUser } = useAuth();
+  const { user, setUser,profile } = useAuth();
 
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    phone: user?.phone || '',
-    specialization: user?.specialization || 'General Medicine',
-    qualification: user?.qualification || '',
-    experience: user?.experience !== undefined ? user.experience : '',
-    consultationFee: user?.consultationFee !== undefined ? user.consultationFee : '',
-    profileImage: user?.profileImage || '',
-    availability: user?.availability || 'Mon-Fri (09:00 - 17:00)',
+    name: profile?.name || '',
+    phone: profile?.phone || '',
+    specialization: profile?.specialization || 'General Medicine',
+    qualification: profile?.qualification || '',
+    experience: profile?.experience !== undefined ? profile.experience : '',
+    consultationFee: profile?.consultationFee !== undefined ? profile.consultationFee : '',
+    profileImage: profile?.profileImage || '',
+    availability: profile?.availability || 'Mon-Fri (09:00 - 17:00)',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +32,7 @@ export default function DoctorProfile() {
     setSuccessMsg('');
     setErrorMsg('');
 
-    const res = await DoctorService.updateById(user?.id, {
+    const res = await DoctorService.updateById(profile?.id, {
       ...formData,
       experience: Number(formData.experience) || 0,
       consultationFee: Number(formData.consultationFee) || 50,

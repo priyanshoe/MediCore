@@ -37,8 +37,9 @@ const findByUserId = async (id) => {
 
 const updateById = async (id, data) => {
     try {
-        const result = await axios.patch(`${url}/patient-profile/${id}`, data)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.put(`${url}/profile/patient/${id}`, data, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
         console.log("Error updating doctor: ", err)
         throw { success: false, status: err.status || 500,error: err.response?.data.message ||  err.message };

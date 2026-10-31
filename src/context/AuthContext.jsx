@@ -8,16 +8,19 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Load existing session on initial load
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem('medical_user');
+      const storedProfile = localStorage.getItem('medical_profile');
       const storedToken = localStorage.getItem('medical_token');
 
-      if (storedUser && storedToken) {
+      if (storedUser && storedProfile && storedToken) {
         setUser(JSON.parse(storedUser));
+        setProfile(JSON.parse(storedProfile))
       }
     } catch (err) {
       console.error('Failed to load user session:', err);
@@ -49,18 +52,13 @@ export function AuthProvider({ children }) {
 
       // Store auth state
       let authUser = data.user;
+      let profile = data?.patientProfile || data.doctorProfile;
 
-      // if (user.role === 'PATIENT') {
-      //   const result = await PatientService.findByUserId(user.id)
-      //   authUser = { ...result.data[0], role: 'PATIENT' }
-      // }
-      // if (user.role === 'DOCTOR') {
-      //   const result = await DoctorService.findByUserId(user.id)
-      //   authUser = { ...result.data[0], role: 'DOCTOR' }
-      // }
       localStorage.setItem('medical_user', JSON.stringify(authUser));
+      localStorage.setItem('medical_profile', JSON.stringify(profile));
       localStorage.setItem('medical_token', data.token);
       setUser(authUser);
+      setProfile(profile);
 
       return { success: true, user: data.user };
     } catch (err) {
@@ -87,6 +85,7 @@ export function AuthProvider({ children }) {
         createdUser = await DoctorService.findById(result.id)
       }
       localStorage.setItem('medical_user', JSON.stringify(createdUser));
+      // localStorage.setItem('medical_profile', JSON.stringify(profile));
       localStorage.setItem('medical_token', `mock_token_${Date.now()}`);
       setUser(createdUser);
 
@@ -128,6 +127,8 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     setUser,
+    profile,
+    setProfile,
     loading,
     login,
     register,
