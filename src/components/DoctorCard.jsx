@@ -54,7 +54,7 @@ export default function DoctorCard({ doctor, onBook }) {
           View Profile
         </Link>
         <Link
-          to={`/patient/doctors/${doctor.id}/book`}
+          to={`/patient/doctors/${doctor.userId}/book`}
           className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors shadow-xs"
         >
           <Calendar className="w-3.5 h-3.5" />

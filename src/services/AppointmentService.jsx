@@ -60,7 +60,8 @@ const updateStatus = async (id, status) => {
 
 const save = async (data) => {
     try {
-        const result = await axios.post(`${url}/appointments`, data)
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.post(`${url}/appointment`, data, {headers:{ Authorization: "Bearer "+token}})
         return { success: true, status: 200, data: result.data };
     } catch (err) {
         console.log("Error creating appointment: ", err)

@@ -27,24 +27,45 @@ export default function BookAppointment() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Prevent selecting past dates
+  const todayDateStr = new Date().toISOString().split('T')[0];
+  const currentTime = new Date().toISOString().split('T')[1].split(".")[0];
+  
+
+
   // Form State
   const [formData, setFormData] = useState({
-    doctorId: preselectedDoctorId || '',
-    date: '',
-    time: '10:00 AM',
+    userId: preselectedDoctorId || '',
+    date: todayDateStr,
+    time: '10:30',
     reason: '',
   });
 
-  const timeSlots = [
-    '09:00 AM',
-    '09:45 AM',
-    '10:30 AM',
-    '11:15 AM',
-    '02:00 PM',
-    '02:45 PM',
-    '03:30 PM',
-    '04:15 PM',
-    '05:00 PM',
+  const timeSlots = [    
+  { label: '09:00 AM', value: '09:00' },
+  { label: '09:45 AM', value: '09:45' },
+  { label: '10:30 AM', value: '10:30' },
+  { label: '11:15 AM', value: '11:15' },
+  { label: '02:00 PM', value: '14:00' },
+  { label: '02:45 PM', value: '14:45' },
+  { label: '03:30 PM', value: '15:30' },
+  { label: '04:15 PM', value: '16:15' },
+  { label: '05:00 PM', value: '17:00' },
+  { label: '05:15 PM', value: '17:15' },
+  { label: '05:30 PM', value: '17:30' },
+  { label: '05:45 PM', value: '17:45' },
+  { label: '06:00 PM', value: '18:00' },
+  { label: '06:15 PM', value: '18:15' },
+  { label: '06:30 PM', value: '18:30' },
+  { label: '06:45 PM', value: '18:45' },
+  { label: '07:00 PM', value: '19:00' },
+  { label: '07:15 PM', value: '19:15' },
+  { label: '07:30 PM', value: '19:30' },
+  { label: '07:45 PM', value: '19:45' },
+  { label: '08:00 PM', value: '20:00' },
+  { label: '08:15 PM', value: '20:15' },
+  { label: '08:30 PM', value: '20:30' },
+  { label: '08:45 PM', value: '20:45' },
   ];
 
   useEffect(() => {
@@ -56,10 +77,10 @@ export default function BookAppointment() {
         setDoctors(docs);
 
         if (preselectedDoctorId) {
-          const matched = docs.find((d) => String(d.id) === String(preselectedDoctorId));
+          const matched = docs.find((d) => String(d.userId) === String(preselectedDoctorId));
           if (matched) {
             setSelectedDoctor(matched);
-            setFormData((prev) => ({ ...prev, doctorId: matched.id }));
+            setFormData((prev) => ({ ...prev, userId: matched.userId }));
           }
         }
       } catch (err) {
@@ -73,17 +94,17 @@ export default function BookAppointment() {
     loadDoctors();
   }, [preselectedDoctorId]);
 
-  const handleDoctorChange = (doctorId) => {
-    const doc = doctors.find((d) => String(d.id) === String(doctorId));
+  const handleDoctorChange = (userId) => {
+    const doc = doctors.find((d) => String(d.userId) === String(userId));
     setSelectedDoctor(doc || null);
-    setFormData((prev) => ({ ...prev, doctorId }));
+    setFormData((prev) => ({ ...prev, userId }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.doctorId) {
+    if (!formData.userId) {
       setError('Please select a doctor for your appointment.');
       return;
     }
@@ -99,27 +120,21 @@ export default function BookAppointment() {
     try {
       setIsSubmitting(true);
       const appointmentPayload = {
-        patientId: !isNaN(Number(user.id)) ? Number(user.id) : user.id,
-        doctorId: !isNaN(Number(formData.doctorId)) ? Number(formData.doctorId) : formData.doctorId,
+        doctorId: !isNaN(Number(formData.userId)) ? Number(formData.userId) : formData.userId,
         date: formData.date,
         time: formData.time,
         reason: formData.reason.trim(),
-        status: 'PENDING',
-        createdAt: new Date().toLocaleString(),
       };
 
       await AppointmentService.save(appointmentPayload);
       navigate('/patient/appointments');
     } catch (err) {
       console.error('Failed to book appointment:', err);
-      setError('Failed to submit appointment request. Please try again.');
+      setError( err.error || 'Failed to submit appointment request. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  // Prevent selecting past dates
-  const todayDateStr = new Date().toISOString().split('T')[0];
 
   if (loading) return <Loading message="Loading booking form..." />;
 
@@ -156,13 +171,13 @@ export default function BookAppointment() {
           </label>
           <select
             required
-            value={formData.doctorId}
+            value={formData.userId}
             onChange={(e) => handleDoctorChange(e.target.value)}
             className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
           >
             <option value="">-- Choose a Doctor --</option>
             {doctors.map((doc) => (
-              <option key={doc.id} value={doc.id}>
+              <option key={doc.userId} value={doc.userId}>
                 {doc.name} — {doc.specialization} (${doc.consultationFee || 50})
               </option>
             ))}
@@ -224,8 +239,9 @@ export default function BookAppointment() {
               className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
             >
               {timeSlots.map((slot) => (
-                <option key={slot} value={slot}>
-                  {slot}
+                // slot.value > currentTime &&
+                <option key={slot.value} value={slot.value}>
+                  {slot.label}
                 </option>
               ))}
             </select>
