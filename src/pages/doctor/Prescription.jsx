@@ -28,6 +28,7 @@ export default function DoctorPrescription() {
   const [prescriptions, setPrescriptions] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
+  const [selectedPatient, SetselectedPatient] = useState({})
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -44,13 +45,18 @@ export default function DoctorPrescription() {
     medicines: [{ name: '', dosage: '', frequency: '' }],
   });
 
+  // console.log("patients",patients);
+  // // console.log("formdata", formData);
+  // console.log("appointments", appointments);
+  // console.log("patient", selectedPatient);
+  
   const fetchData = async () => {
     if (!user) return;
     try {
       setLoading(true);
       const [prescRes, apptsRes, patientsRes] = await Promise.all([
-        PrescriptionService.findByDoctorId(user.doctorId),
-        AppointmentService.findByDoctortId(user.doctorId),
+        PrescriptionService.findByDoctor(),
+        AppointmentService.findByDoctor(),
         PatientService.findAll(),
       ]);
 
@@ -189,6 +195,11 @@ export default function DoctorPrescription() {
     const p = patients.find((pat) => String(pat.id) === String(patientId));
     return p ? p.name : `Patient #${patientId}`;
   };
+ 
+  const handlePatientChange = (e) =>{
+    setFormData({ ...formData, patientId: e.target.value })
+    SetselectedPatient(patients.find((p)=> p.userId == e.target.value))
+  }
 
   return (
     <div className="space-y-8">
@@ -230,13 +241,13 @@ export default function DoctorPrescription() {
               <select
                 required
                 value={formData.patientId}
-                onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
+                onChange={(e) => handlePatientChange(e)}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
               >
                 <option value="">-- Choose Patient --</option>
                 {patients.map((pat) => (
-                  <option key={pat.id} value={pat.id}>
-                    {pat.name} ({pat.email})
+                  <option key={pat.userId} value={pat.userId}>
+                    {pat.name} ({pat.phone})
                   </option>
                 ))}
               </select>
@@ -244,23 +255,26 @@ export default function DoctorPrescription() {
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                Related Appointment (Optional)
+                Related Appointment
               </label>
               <select
+              required
                 value={formData.appointmentId}
                 onChange={(e) => {
                   const apptId = e.target.value;
-                  const appt = appointments.find((a) => String(a.id) === String(apptId));
                   setFormData((prev) => ({
                     ...prev,
                     appointmentId: apptId,
-                    patientId: appt ? appt.patientId : prev.patientId,
                   }));
                 }}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
               >
-                <option value="">-- None / General Consultation --</option>
-                {appointments.map((a) => (
+                <option value="">-- Select patient first --</option>
+                {
+                
+                appointments
+                .filter((a)=> a.patient.id == selectedPatient.id )
+                .map((a) => (
                   <option key={a.id} value={a.id}>
                     Appt #{a.id} - {a.date} ({a.reason}) [{a.status}]
                   </option>
