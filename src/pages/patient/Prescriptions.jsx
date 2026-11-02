@@ -165,7 +165,7 @@ export default function PatientPrescriptions() {
                       <Calendar className="w-4 h-4 text-teal-600" />
                       Next Follow-up Consultation:
                     </span>
-                    <span className="font-bold">{p.followUpDate}</span>
+                    <span className="font-bold">{p.followUpDate?.split("T")[0]}</span>
                   </div>
                 )}
               </div>

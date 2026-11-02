@@ -82,7 +82,7 @@ export default function DoctorAppointments() {
   };
 
   const handleAddPrescription = (appointment) => {
-    navigate(`/doctor/prescription?appointmentId=${appointment.id}&patientId=${appointment.patientId}`);
+    navigate(`/doctor/prescription?appointmentId=${appointment.id}&patientId=${appointment.patient.id}`);
   };
 
   const filtered = appointments.filter((a) => {

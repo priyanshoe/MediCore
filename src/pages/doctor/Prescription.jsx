@@ -29,6 +29,7 @@ export default function DoctorPrescription() {
   const [appointments, setAppointments] = useState([]);
   const [patients, setPatients] = useState([]);
   const [selectedPatient, SetselectedPatient] = useState({})
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -62,6 +63,8 @@ export default function DoctorPrescription() {
       setPrescriptions(myPrescriptions);
       setAppointments(myAppts);
       setPatients(allPatients);
+      SetselectedPatient(allPatients.find((p)=> p?.userId == preselectedPatientId))
+      
 
       // If preselected appointment exists in DB
       if (preselectedApptId) {
@@ -70,7 +73,7 @@ export default function DoctorPrescription() {
           setFormData((prev) => ({
             ...prev,
             appointmentId: targetAppt.id,
-            patientId: targetAppt.patientId,
+            patientId: targetAppt.patient.id,
           }));
 
           // Check if prescription already exists for this appointment
@@ -79,12 +82,12 @@ export default function DoctorPrescription() {
           );
           if (existingPresc) {
             setFormData({
-              patientId: existingPresc.patientId,
+              patientId: existingPresc.patient.id,
               appointmentId: existingPresc.appointmentId,
               diagnosis: existingPresc.diagnosis || '',
               instructions: existingPresc.instructions || '',
               notes: existingPresc.notes || '',
-              followUpDate: existingPresc.followUpDate || '',
+              followUpDate: new Date(existingPresc.followUpDate).toISOString().split('T')[0] || '',
               medicines:
                 existingPresc.medicines && existingPresc.medicines.length > 0
                   ? existingPresc.medicines
@@ -103,6 +106,8 @@ export default function DoctorPrescription() {
 
   useEffect(() => {
     fetchData();
+      // SetselectedPatient(patients.find((p)=> p?.userId == formData?.patientId))
+
   }, [user]);
 
   // Medicine list row operations
@@ -184,11 +189,6 @@ export default function DoctorPrescription() {
   };
 
   if (loading) return <Loading message="Loading prescription workspace..." />;
-
-  const getPatientName = (patientId) => {
-    const p = patients.find((pat) => String(pat.id) === String(patientId));
-    return p ? p.name : `Patient #${patientId}`;
-  };
  
   const handlePatientChange = (e) =>{
     setFormData({ ...formData, patientId: e.target.value })
@@ -252,7 +252,7 @@ export default function DoctorPrescription() {
                 Related Appointment
               </label>
               <select
-              required
+              
                 value={formData.appointmentId}
                 onChange={(e) => {
                   const apptId = e.target.value;
@@ -263,11 +263,10 @@ export default function DoctorPrescription() {
                 }}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
               >
-                <option value="">-- Select patient first --</option>
+                <option value="">-- No Appointment --</option>
                 {
-                
                 appointments
-                .filter((a)=> a.patient.id == selectedPatient.id )
+                .filter((a)=> a.patient.id == selectedPatient?.userId )
                 .map((a) => (
                   <option key={a.id} value={a.id}>
                     Appt #{a.id} - {a.date} ({a.reason}) [{a.status}]
