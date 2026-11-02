@@ -35,6 +35,17 @@ const findByUserId = async (id) => {
     }
 }
 
+const findAllByDoctor = async () => {
+    try {
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.get(`${url}/profile/patient/doctor`, {headers:{ Authorization: "Bearer "+token}})
+        return { success: true, status: 200, data: result.data.data };
+    } catch (err) {
+        console.log("Error finding doctor: ", err)
+        throw { success: false, status: err.status || 500, error: err.response?.data.message ||  err.message };
+    }
+}
+
 const updateById = async (id, data) => {
     try {
         const token = localStorage.getItem("medical_token");
@@ -46,4 +57,4 @@ const updateById = async (id, data) => {
     }
 }
 
-export default { findAll, findById, findByUserId, updateById }
+export default { findAll, findById, findByUserId, updateById,findAllByDoctor }

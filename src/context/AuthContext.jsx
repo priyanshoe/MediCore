@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../api/api';
 import AuthService from '../services/AuthService';
 import PatientService from '../services/PatientService';
 import DoctorService from '../services/DoctorService';
+import axios from 'axios';
 
 const AuthContext = createContext(null);
 
@@ -77,20 +77,15 @@ export function AuthProvider({ children }) {
       const Response = await AuthService.register(userData);
       // Auto login newly registered patient
       const result = Response.data;
-      let createdUser = null;
-      if (result.role === 'PATIENT') {
-        createdUser = await PatientService.findById(result.id)
-      }
-      if (result.role === 'DOCTOR') {
-        createdUser = await DoctorService.findById(result.id)
-      }
-      localStorage.setItem('medical_user', JSON.stringify(createdUser));
-      // localStorage.setItem('medical_profile', JSON.stringify(profile));
-      localStorage.setItem('medical_token', `mock_token_${Date.now()}`);
-      setUser(createdUser);
+      let authUser = result.user;
+      let profile = result?.patientProfile || result?.doctorProfile;
+      localStorage.setItem('medical_user', JSON.stringify(authUser));
+      localStorage.setItem('medical_profile', JSON.stringify(profile));
+      localStorage.setItem('medical_token', result?.token);
+      setUser(authUser);
 
 
-      return { success: true, user: createdUser };
+      return { success: true, user: authUser };
     } catch (err) {
       console.error('Registration error:', err);
       return { success: false, message: err?.error || 'Failed to create account. Please try again.' };
@@ -113,7 +108,7 @@ export function AuthProvider({ children }) {
     if (!user) return { success: false, message: 'No active session' };
 
     try {
-      const response = await api.patch(`/users/${user.id}`, updates);
+      const response = await axios.patch(`/users/${user.id}`, updates);
       const updatedUser = response.data;
       localStorage.setItem('medical_user', JSON.stringify(updatedUser));
       setUser(updatedUser);

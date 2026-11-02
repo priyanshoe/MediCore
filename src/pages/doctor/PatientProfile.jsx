@@ -51,18 +51,17 @@ export default function DoctorPatientProfile() {
         setError('Patient record could not be found.');
         setLoading(false);
         return;
-        // Fallback to searching all patients
       }
 
       // 2. Fetch appointments between this doctor and this patient
-      // if (user) {
-      //   const apptsRes = await AppointmentService.findByDoctortId(user.doctorId);
-      //   const allAppts = apptsRes.data || [];
-      //   const filtered = allAppts
-      //     .filter((a) => String(a.patientId) === String(currentPatientId))
-      //     .sort((a, b) => (b.date > a.date ? 1 : -1));
-      //   setPatientAppointments(filtered);
-      // }
+      if (user) {
+        const apptsRes = await AppointmentService.findByDoctor();
+        const allAppts = apptsRes.data || [];
+        const filtered = allAppts
+          .filter((a) => String(a.patient.id) === String(currentPatientId))
+          .sort((a, b) => (b.date > a.date ? 1 : -1));
+        setPatientAppointments(filtered);
+      }
 
 
 
@@ -219,7 +218,7 @@ export default function DoctorPatientProfile() {
             <Calendar className="w-3.5 h-3.5 text-teal-600" />
             <span>Date of Birth</span>
           </div>
-          <p className="text-sm font-bold text-slate-900">{patient.dateOfBirth || 'Not provided'}</p>
+          <p className="text-sm font-bold text-slate-900">{patient.dateOfBirth?.split("T")[0] || 'Not provided'}</p>
           <p className="text-xs text-slate-500">{age}</p>
         </div>
 

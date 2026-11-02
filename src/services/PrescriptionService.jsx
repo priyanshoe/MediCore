@@ -58,10 +58,11 @@ const save = async (data) => {
 
 const update = async (id, data) => {
     try {
-        const result = await axios.get(`${url}/prescriptions/${id}`, data)
-        return { success: true, status: 200, data: result.data };
+        const token = localStorage.getItem("medical_token");
+        const result = await axios.put(`${url}/prescription/${id}`, data, {headers:{ Authorization: "Bearer "+token}});;
+        return { success: true, status: 200, data: result.data.data };
     } catch (err) {
-        console.log("Error finding doctor prescriptions: ", err)
+        console.log("Error updating prescriptions: ", err)
         throw { success: false, status: err.status || 500, error: err.response?.data.message ||   err.message };
     }
 }

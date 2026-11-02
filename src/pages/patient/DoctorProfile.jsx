@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import {
   Stethoscope,

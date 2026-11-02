@@ -44,11 +44,6 @@ export default function DoctorPrescription() {
     followUpDate: '',
     medicines: [{ name: '', dosage: '', frequency: '' }],
   });
-
-  // console.log("patients",patients);
-  // // console.log("formdata", formData);
-  // console.log("appointments", appointments);
-  // console.log("patient", selectedPatient);
   
   const fetchData = async () => {
     if (!user) return;
@@ -151,7 +146,6 @@ export default function DoctorPrescription() {
       const validMedicines = formData.medicines.filter((m) => m.name.trim() !== '');
 
       const payload = {
-        doctorId: Number(user.id),
         patientId: Number(formData.patientId),
         appointmentId: formData.appointmentId ? Number(formData.appointmentId) : null,
         diagnosis: formData.diagnosis,
@@ -183,7 +177,7 @@ export default function DoctorPrescription() {
       fetchData();
     } catch (err) {
       console.error('Failed to save prescription:', err);
-      setError('Failed to save prescription. Please try again.');
+      setError(err.error || 'Failed to save prescription. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -444,7 +438,7 @@ export default function DoctorPrescription() {
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-slate-400">Patient</p>
-                    <p className="text-sm font-semibold text-slate-900">{getPatientName(p.patientId)}</p>
+                    <p className="text-sm font-semibold text-slate-900">{p?.patient?.name}</p>
                   </div>
                 </div>
 

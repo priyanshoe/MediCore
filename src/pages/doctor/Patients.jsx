@@ -4,12 +4,11 @@ import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { Users, Phone, Mail, Calendar, User, Clock, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AppointmentService from '../../services/AppointmentService';
 import PatientService from '../../services/PatientService';
 
 export default function DoctorPatients() {
   const { user } = useAuth();
-  const [relevantPatients, setRelevantPatients] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -19,50 +18,10 @@ export default function DoctorPatients() {
       try {
         setLoading(true);
         // 1. Fetch appointments for this doctor only
-        const apptsRes = await AppointmentService.findByDoctortId(user.doctorId);
-        const doctorAppts = apptsRes.data || [];
+        const profileRes = await PatientService.findAllByDoctor();
+        const profiles = profileRes.data || [];
 
-        // 2. Extract unique patient IDs (normalized to string for safe comparison)
-        const patientIds = Array.from(new Set(doctorAppts.map((a) => String(a.patientId))));
-
-        if (patientIds.length === 0) {
-          setRelevantPatients([]);
-          setLoading(false);
-          return;
-        }
-
-        // 3. Fetch all patients and filter only those with appointments with this doctor
-        const patientsRes = await PatientService.findAll();
-        const allPatients = patientsRes.data || [];
-
-        const filtered = allPatients
-          .filter((p) => patientIds.includes(String(p.patientId)))
-          .map((patient) => {
-            // Find patient's appointments with this doctor
-            const myPatientAppts = doctorAppts
-              .filter((a) => String(a.patientId) === String(patient.patientId))
-              .sort((a, b) => (b.date > a.date ? 1 : -1));
-
-            const lastAppointment = myPatientAppts[0];
-
-            // Compute age if DOB is present
-            let age = 'N/A';
-            if (patient.dateOfBirth) {
-              const birthYear = new Date(patient.dateOfBirth).getFullYear();
-              const currentYear = new Date().getFullYear();
-              age = `${currentYear - birthYear} yrs`;
-            }
-
-            return {
-              ...patient,
-              age,
-              lastAppointmentDate: lastAppointment ? `${lastAppointment.date} (${lastAppointment.time})` : 'N/A',
-              lastAppointmentStatus: lastAppointment ? lastAppointment.status : 'N/A',
-              totalVisits: myPatientAppts.length,
-            };
-          });
-
-        setRelevantPatients(filtered);
+        setPatients(profiles);
       } catch (err) {
         console.error('Failed to load doctor patients:', err);
         setError('Failed to fetch assigned patient directory.');
@@ -92,7 +51,7 @@ export default function DoctorPatients() {
         </div>
       )}
 
-      {relevantPatients.length === 0 ? (
+      {patients.length === 0 ? (
         <EmptyState
           icon={Users}
           title="No patients assigned yet"
@@ -113,7 +72,7 @@ export default function DoctorPatients() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700">
-                {relevantPatients.map((p) => (
+                {patients.map((p) => (
                   <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-3">

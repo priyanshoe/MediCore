@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import api from '../../api/api';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
 import { FileText, Stethoscope, Calendar, Pill, Clock, AlertCircle } from 'lucide-react';
@@ -10,7 +9,6 @@ import DoctorService from '../../services/DoctorService';
 export default function PatientPrescriptions() {
   const { user } = useAuth();
   const [prescriptions, setPrescriptions] = useState([]);
-  const [doctorsMap, setDoctorsMap] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -25,13 +23,6 @@ export default function PatientPrescriptions() {
         ]);
 
         const prescList = prescRes.data || [];
-        const docList = doctorsRes.data || [];
-
-        const dMap = {};
-        docList.forEach((d) => {
-          dMap[d.id] = d;
-        });
-        setDoctorsMap(dMap);
 
         setPrescriptions(prescList);
       } catch (err) {
@@ -75,7 +66,7 @@ export default function PatientPrescriptions() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {prescriptions.map((p) => {
-            const doctor = doctorsMap[p.doctorId];
+            const doctor = p.doctor;
 
             return (
               <div
@@ -97,7 +88,7 @@ export default function PatientPrescriptions() {
                       />
                       <div>
                         <h3 className="font-bold text-slate-900">
-                          {doctor?.name || `Dr. Specialist #${p.doctorId}`}
+                          {doctor?.name || `Dr. Specialist #${doctor?.id}`}
                         </h3>
                         <p className="text-xs text-teal-600 font-medium">
                           {doctor?.specialization || 'Medical Specialist'}
