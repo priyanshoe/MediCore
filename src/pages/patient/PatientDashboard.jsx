@@ -36,9 +36,9 @@ export default function PatientDashboard() {
     try {
       setLoading(true);
       const [apptsRes, doctorsRes, prescRes] = await Promise.all([
-        AppointmentService.findByPatientId(user.id),
+        AppointmentService.findByPatient(),
         DoctorService.findAll(),
-        PrescriptionService.findByPatientId(user.id)
+        PrescriptionService.findByPatient()
       ]);
 
       const myAppts = apptsRes.data || [];

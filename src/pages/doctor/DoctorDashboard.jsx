@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Loading from '../../components/Loading';
 import EmptyState from '../../components/EmptyState';
@@ -17,6 +17,7 @@ import AppointmentService from '../../services/AppointmentService';
 import PatientService from '../../services/PatientService';
 
 export default function DoctorDashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [stats, setStats] = useState({
     todayAppointments: 0,
@@ -25,7 +26,7 @@ export default function DoctorDashboard() {
     totalPatients: 0,
   });
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-  const [patientsMap, setPatientsMap] = useState({});
+  const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -35,19 +36,14 @@ export default function DoctorDashboard() {
       setLoading(true);
       // Doctor only sees appointments where doctorId matches user.id
       const [apptsRes, usersRes] = await Promise.all([
-        AppointmentService.findByDoctortId(user.doctorId),
-        PatientService.findAll(),
+        AppointmentService.findByDoctor(),
+        PatientService.findAllByDoctor(),
       ]);
 
       const myAppts = apptsRes.data || [];
-      const patients = usersRes.data || [];
+      const patientsRes = usersRes.data || [];
 
-      const pMap = {};
-      patients.forEach((p) => {
-        pMap[p.id] = p;
-        pMap[String(p.id)] = p;
-      });
-      setPatientsMap(pMap);
+      setPatients(patientsRes);
 
       // Today's date string in YYYY-MM-DD
       const todayStr = new Date().toISOString().split('T')[0];
@@ -55,14 +51,12 @@ export default function DoctorDashboard() {
       const pendingAppts = myAppts.filter((a) => a.status === 'PENDING');
       const acceptedAppts = myAppts.filter((a) => a.status === 'ACCEPTED');
 
-      // Distinct patients that have appointments with this doctor
-      const distinctPatientIds = new Set(myAppts.map((a) => a.patientId));
 
       setStats({
         todayAppointments: todayAppts.length,
         pendingAppointments: pendingAppts.length,
         acceptedAppointments: acceptedAppts.length,
-        totalPatients: distinctPatientIds.size,
+        totalPatients: patientsRes.length,
       });
 
       // Show top upcoming appointments
@@ -101,6 +95,11 @@ export default function DoctorDashboard() {
     } catch (err) {
       alert('Failed to reject appointment.');
     }
+  };
+
+  
+  const handleAddPrescription = (appointment) => {
+    navigate(`/doctor/prescription?appointmentId=${appointment.id}&patientId=${appointment.patient.id}`);
   };
 
   if (loading) return <Loading message="Loading doctor dashboard..." />;
@@ -212,10 +211,11 @@ export default function DoctorDashboard() {
               <AppointmentCard
                 key={appt.id}
                 appointment={appt}
-                patient={patientsMap[appt.patientId]}
+                patient={patients.find((p)=> p.userId = appt.patient.id)}
                 role="DOCTOR"
                 onAccept={handleAccept}
                 onReject={handleReject}
+                onAddPrescription={handleAddPrescription}
               />
             ))}
           </div>
