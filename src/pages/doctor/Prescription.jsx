@@ -23,7 +23,7 @@ export default function DoctorPrescription() {
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const preselectedApptId = searchParams.get('appointmentId');
-  const preselectedPatientId = searchParams.get('patientId');
+  const preselectedProfileId = searchParams.get('patientId');
 
   const [prescriptions, setPrescriptions] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -37,8 +37,9 @@ export default function DoctorPrescription() {
 
   // Form State
   const [formData, setFormData] = useState({
-    patientId: preselectedPatientId || '',
+    patientId:  '',
     appointmentId: preselectedApptId || '',
+    profileId: preselectedProfileId || '',
     diagnosis: '',
     instructions: '',
     notes: '',
@@ -63,7 +64,8 @@ export default function DoctorPrescription() {
       setPrescriptions(myPrescriptions);
       setAppointments(myAppts);
       setPatients(allPatients);
-      SetselectedPatient(allPatients.find((p)=> p?.userId == preselectedPatientId))
+      const patient = allPatients.find((p)=> p?.id == preselectedProfileId)
+      SetselectedPatient(patient)
       
 
       // If preselected appointment exists in DB
@@ -73,7 +75,8 @@ export default function DoctorPrescription() {
           setFormData((prev) => ({
             ...prev,
             appointmentId: targetAppt.id,
-            patientId: targetAppt.patient.id,
+            patientId: patient.userId,
+            profileId: preselectedProfileId
           }));
 
           // Check if prescription already exists for this appointment
@@ -191,10 +194,16 @@ export default function DoctorPrescription() {
   if (loading) return <Loading message="Loading prescription workspace..." />;
  
   const handlePatientChange = (e) =>{
-    setFormData({ ...formData, patientId: e.target.value })
-    SetselectedPatient(patients.find((p)=> p.userId == e.target.value))
+    const profileId = e.target.value;
+    const patient = patients.find((p)=> p.id == profileId);
+    SetselectedPatient(patient);
+    setFormData((prev)=>({
+      ...prev,
+      patientId: patient.UserId,
+      profileId: profileId
+    }));
   }
-
+  
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -234,13 +243,13 @@ export default function DoctorPrescription() {
               </label>
               <select
                 required
-                value={formData.patientId}
+                value={formData.profileId}
                 onChange={(e) => handlePatientChange(e)}
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
               >
                 <option value="">-- Choose Patient --</option>
                 {patients.map((pat) => (
-                  <option key={pat.userId} value={pat.userId}>
+                  <option key={pat.id} value={pat.id}>
                     {pat.name} ({pat.phone})
                   </option>
                 ))}
@@ -266,7 +275,7 @@ export default function DoctorPrescription() {
                 <option value="">-- No Appointment --</option>
                 {
                 appointments
-                .filter((a)=> a.patient.id == selectedPatient?.userId )
+                .filter((a)=> a.patient.id == selectedPatient?.id )
                 .map((a) => (
                   <option key={a.id} value={a.id}>
                     Appt #{a.id} - {a.date} ({a.reason}) [{a.status}]
