@@ -86,6 +86,7 @@ export default function DoctorPrescription() {
           if (existingPresc) {
             setFormData({
               patientId: existingPresc.patient.id,
+              profileId: preselectedProfileId || '',
               appointmentId: existingPresc.appointmentId,
               diagnosis: existingPresc.diagnosis || '',
               instructions: existingPresc.instructions || '',

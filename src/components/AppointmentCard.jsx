@@ -166,7 +166,7 @@ export default function AppointmentCard({
         {isDoctor && appointment.status === 'PENDING' && (
           <>
             <Link
-              to={`/doctor/patients/${appointment.patientId}`}
+              to={`/doctor/patients/${appointment.patient.id}`}
               className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
             >
               <User className="w-3.5 h-3.5 text-slate-500" />

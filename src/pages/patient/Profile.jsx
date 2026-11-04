@@ -30,17 +30,17 @@ export default function PatientProfile() {
     setSuccessMsg('');
     setErrorMsg('');
 
-    const res = await PatientService.updateById(profile?.id, formData);
-    const authUser = { ...res.data, role: 'PATIENT' }
-    localStorage.setItem('medical_user', JSON.stringify(authUser));
-    setUser(authUser);
-    setIsSubmitting(false);
+    try{
 
-    if (res.success) {
+      const res = await PatientService.updateById(profile?.id, formData);
+      const authUser = { ...res.data, role: 'PATIENT' }
+      localStorage.setItem('medical_user', JSON.stringify(authUser));
+      setUser(authUser);
       setSuccessMsg('Your patient profile was updated successfully.');
-      setIsSubmitting(false);
-    } else {
-      setErrorMsg(res.message || 'Failed to update profile.');
+    }catch (err){
+      setErrorMsg(err.error || 'Failed to update profile.');
+
+    }finally{
       setIsSubmitting(false);
     }
   };
@@ -136,9 +136,9 @@ export default function PatientProfile() {
               onChange={handleChange}
               className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600"
             >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
             </select>
           </div>
         </div>

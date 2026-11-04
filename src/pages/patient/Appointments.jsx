@@ -30,15 +30,6 @@ export default function PatientAppointments() {
       ]);
       
       const appts = apptsRes.data || [];
-      // const prescriptions = prescRes.data || [];
-
-
-      // const prMap = {};
-      // prescriptions.forEach((pr) => {
-      //   prMap[pr.appointmentId] = pr;
-      //   prMap[String(pr.appointmentId)] = pr;
-      // });
-      // setPrescriptionsMap(prMap);
 
       setAppointments(appts);
     } catch (err) {
