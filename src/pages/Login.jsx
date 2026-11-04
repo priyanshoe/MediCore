@@ -119,7 +119,7 @@ export default function Login() {
         </form>
 
         {/* Quick Demo Credentials Box */}
-        <div className="mt-6 pt-5 border-t border-slate-100">
+        {/* <div className="mt-6 pt-5 border-t border-slate-100">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-2.5">
             <Sparkles className="w-3.5 h-3.5 text-teal-600" />
             <span>Quick Demo Accounts (Click to Fill):</span>
@@ -150,7 +150,7 @@ export default function Login() {
           <p className="text-[11px] text-slate-400 text-center mt-2">
             Default password for demo accounts is: <code className="text-slate-600">password123</code>
           </p>
-        </div>
+        </div> */}
 
         {/* Footer registration link */}
         <div className="mt-6 text-center text-xs text-slate-500">

@@ -47,22 +47,6 @@
       "password": "password123",
       "role": "PATIENT",
       "status": "Active"
-    },
-    {
-      "email": "demo@demo.com",
-      "password": "222222222222222222",
-      "role": "DOCTOR",
-      "status": "Active",
-      "id": "yj4Kf78X28U",
-      "name": "demo"
-    },
-    {
-      "name": "demo2",
-      "email": "demo2@demo.com",
-      "password": "222222222",
-      "role": "DOCTOR",
-      "status": "Inactive",
-      "id": "yDJ8syAFGzE"
     }
   ],
   "doctor-profile": [
@@ -101,31 +85,6 @@
       "consultationFee": 750,
       "profileImage": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=80",
       "availability": "Tue-Sat (11:00 - 18:00)"
-    },
-    {
-      "doctorId": "yj4Kf78X28U",
-      "name": "demo",
-      "specialization": "General Medicine",
-      "qualification": "MBBS, DM (Neurology)",
-      "experience": 6,
-      "consultationFee": 22,
-      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
-      "availability": "Mon-Fri (09:00 - 17:00)",
-      "id": "I2DTWhbY7UM"
-    },
-    {
-      "doctorId": "yDJ8syAFGzE",
-      "name": "demo2",
-      "specialization": "General Medicine",
-      "qualification": "MBBS, DM (Neurology)",
-      "experience": 2,
-      "consultationFee": 50,
-      "profileImage": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80",
-      "availability": "Mon-Fri (09:00 - 17:00)",
-      "id": "MMPPDo8nSwg",
-      "email": "demo2@demo.com",
-      "password": "222222222",
-      "phone": "222222222"
     }
   ],
   "patient-profile": [
@@ -223,6 +182,5 @@
       "notes": "Patient advised to log daily morning blood pressure readings.",
       "followUpDate": "2026-09-30"
     }
-  ],
-  "$schema": "./node_modules/json-server/schema.json"
+  ]
 }

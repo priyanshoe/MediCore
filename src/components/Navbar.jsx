@@ -68,9 +68,6 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
             </div>
             <div>
               <span className="text-base font-bold text-slate-900 tracking-tight">MediCare</span>
-              <span className="hidden sm:inline-block text-xs text-teal-600 font-medium ml-1.5 px-1.5 py-0.2 bg-teal-50 rounded">
-                Learning App
-              </span>
             </div>
           </Link>
         </div>
