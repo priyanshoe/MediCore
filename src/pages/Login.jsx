@@ -119,38 +119,38 @@ export default function Login() {
         </form>
 
         {/* Quick Demo Credentials Box */}
-        {/* <div className="mt-6 pt-5 border-t border-slate-100">
+        <div className="mt-6 pt-5 border-t border-slate-100">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-2.5">
             <Sparkles className="w-3.5 h-3.5 text-teal-600" />
             <span>Quick Demo Accounts (Click to Fill):</span>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            <button
+          <div className="grid grid-cols-2 gap-2">
+            {/* <button
               type="button"
               onClick={() => fillDemoAccount('admin@example.com', 'password123')}
               className="px-2.5 py-1.5 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 rounded-lg text-xs font-medium text-center transition-colors"
             >
               Admin
-            </button>
+            </button> */}
             <button
               type="button"
-              onClick={() => fillDemoAccount('doctor@gmail.com', 'doctorpass')}
+              onClick={() => fillDemoAccount('doctor1@medicore.com', 'doctor1pass')}
               className="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-lg text-xs font-medium text-center transition-colors"
             >
               Doctor
             </button>
             <button
               type="button"
-              onClick={() => fillDemoAccount('patient@gmail.com', 'patientpass')}
+              onClick={() => fillDemoAccount('patient1@medicore.com', 'patient1pass')}
               className="px-2.5 py-1.5 bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-700 rounded-lg text-xs font-medium text-center transition-colors"
             >
               Patient
             </button>
           </div>
-          <p className="text-[11px] text-slate-400 text-center mt-2">
+          {/* <p className="text-[11px] text-slate-400 text-center mt-2">
             Default password for demo accounts is: <code className="text-slate-600">password123</code>
-          </p>
-        </div> */}
+          </p> */}
+        </div>
 
         {/* Footer registration link */}
         <div className="mt-6 text-center text-xs text-slate-500">
